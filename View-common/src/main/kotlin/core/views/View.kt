@@ -1,7 +1,8 @@
 package core.views
 
+import core.views.events.ViewEvents
 import core.views.layouts.Layout
-import core.views.viewDelegates.*
+import core.views.propertyDelegates.*
 import utils.validators.DNonNegative
 import utils.validators.Validator
 
@@ -13,10 +14,10 @@ abstract class View {
         GONE
     }
 
-    var id: Int by ViewProperty(-1)
+    var id: Int by LateInitVal()
 
-    var width: Double by ViewProperty(-1.0)
-    var height: Double by ViewProperty(-1.0)
+    var width: Double? by NullableViewProperty()
+    var height: Double? by NullableViewProperty()
 
     var parent: Layout? by NullableViewProperty()
 
@@ -34,7 +35,7 @@ abstract class View {
     var paddingStart: Double by ViewProperty(0.0, Validator(DNonNegative()))
     var paddingEnd: Double by ViewProperty(0.0, Validator(DNonNegative()))
 
-    var onClickListener: (View) -> Unit by OnClickListener()
-    var onLongClickListener: (View) -> Unit by OnLongClickListener()
-    var onResize: (View) -> Unit by OnResizeListener()
+    var onClickListener by EventListener(ViewEvents.ON_CLICK)
+    var onLongClickListener by EventListener(ViewEvents.ON_LONG_CLICK)
+    var onResize by EventListener(ViewEvents.ON_RESIZE)
 }

@@ -1,7 +1,7 @@
 package core.views.layouts
 
 import core.views.View
-import core.views.viewDelegates.NullableViewProperty
+import core.views.propertyDelegates.NullableViewProperty
 
 class LinearLayout: Layout() {
 

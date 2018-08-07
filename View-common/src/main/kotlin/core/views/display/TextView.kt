@@ -1,12 +1,9 @@
-package views.display
+package core.views.display
 
-import core.renderers.ViewRenderer
 import core.views.View
+import core.views.propertyDelegates.NullableViewProperty
 
-class TextView(
-        id: Int,
-        width: Double,
-        height: Double,
-        renderer: ViewRenderer,
-        var text: String? = null
-) : View(id, width, height, renderer)
+class TextView: View() {
+
+    var text: String? by NullableViewProperty()
+}

@@ -1,12 +1,10 @@
 package core.renderers
 
-import core.views.View
+import core.views.events.Event
+import core.views.events.EventListener
 
 interface ViewRenderer {
 
     fun invalidate(viewId: Int)
-
-    fun setOnClickListener(listener: (View) -> Unit)
-    fun setOnLongClickListener(listener: (View) -> Unit)
-    fun setOnResizeListener(listener: (View) -> Unit)
+    fun setEventListener(viewId: Int, event: Event, listener: EventListener)
 }

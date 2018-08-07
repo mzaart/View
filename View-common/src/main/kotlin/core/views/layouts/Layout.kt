@@ -1,7 +1,7 @@
 package core.views.layouts
 
 import core.views.View
-import core.views.viewDelegates.ViewChildrenProperty
+import core.views.propertyDelegates.ViewChildrenProperty
 
 open class Layout: View() {
 

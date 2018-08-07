@@ -1,4 +1,4 @@
-package core.views.viewDelegates
+package core.views.propertyDelegates
 
 import core.renderers.ViewRenderer
 import core.views.View

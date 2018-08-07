@@ -1,4 +1,4 @@
-package core.views.viewDelegates
+package core.views.propertyDelegates
 
 import core.views.View
 import utils.validators.Validator
