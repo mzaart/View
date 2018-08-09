@@ -1,9 +1,8 @@
 package core.views.layouts
 
-import core.views.View
 import core.views.propertyDelegates.NullableViewProperty
 
-class LinearLayout: Layout() {
+open class LinearLayout: Layout() {
 
     var direction: Direction? by NullableViewProperty()
 
@@ -11,6 +10,4 @@ class LinearLayout: Layout() {
         VERTICAL,
         HORIZONTAL
     }
-
-    fun addChild(child: View) = children.add(child)
 }

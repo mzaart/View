@@ -1,28 +1,47 @@
 package core.loaders.builders
 
+import core.loaders.InvalidViewTreeException
+import core.loaders.Key
 import core.views.View
-import core.views.layouts.Layout
-import utils.extensions.notNull
 
-abstract class ViewBuilder<V: View>(
-        protected val parent: Layout,
-        protected val attributes: Map<String, String>
-) {
+abstract class ViewBuilder<V: View> {
 
-    fun buildView(): V {
-        val view = getViewInstance()
+    enum class Keys: Key {
+        ID,
+        TYPE,
+        VISIBILITY,
+        WIDTH ,
+        HEIGHT,
+        DISABLED,
+        IS_CARD,
+        MARGIN_TOP,
+        MARGIN_BOTTOM,
+        MARGIN_START,
+        MARGIN_END,
+        MARGIN_HORIZONTAL,
+        MARGIN_VERTICAL,
+        PADDING_TOP,
+        PADDING_BOTTOM,
+        PADDING_START,
+        PADDING_END,
+        PADDING_HORIZONTAL,
+        PADDING_VERTICAL
+    }
 
-        notNull(attributes["id"]) {id -> view.id = getIdFromString(id)}
-        notNull(attributes["width"]) {w -> w.toDouble()}
-        notNull(attributes["height"]) {h -> h.toDouble()}
+    open val requiredKeys: Set<Key> = setOf()
+    protected abstract val view: V
 
-        applyAttributes(view)
+    fun build() = view
 
+    open fun applyAttributes(attributes: Map<String, String>): V {
+        checkRequiredKeys(attributes.keys)
+        // TODO process common view attributes
         return view
     }
 
-    protected fun getIdFromString(id: String) = id.hashCode()
-
-    protected abstract fun getViewInstance(): V
-    protected abstract fun applyAttributes(v: V)
+    fun checkRequiredKeys(keys: Set<String>) {
+        if (keys.intersect(requiredKeys) != requiredKeys) {
+            throw InvalidViewTreeException((requiredKeys - keys) as Set<String>)
+        }
+    }
 }

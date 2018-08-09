@@ -8,6 +8,7 @@ open class Layout: View() {
     protected val children: MutableList<View> by ViewChildrenProperty(id)
 
     fun getChild(index: Int) = children[index]
+    open fun addChild(child: View) = children.add(child)
     open fun removeChild(child: View) = children.remove(child)
     open fun removeChild(index: Int) = children.removeAt(index)
 }

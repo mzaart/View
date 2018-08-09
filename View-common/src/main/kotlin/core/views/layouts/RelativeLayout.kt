@@ -14,17 +14,15 @@ class RelativeLayout: Layout() {
         TOP_OF,
         BOTTOM_OF,
         START_OF,
-        END_OF,
-        ALIGN_TOP,
-        ALIGN_BOTTOM,
-        ALIGN_START,
-        ALIGN_END
+        END_OF
     }
 
-    fun addChild(child: View, positionings: List<Positioning>, target: View) {
+    fun addChild(child: View, positionings: List<Positioning>, target: View): Boolean {
         positions.add(Pair(target, positionings))
-        children.add(child)
+        return children.add(child)
     }
+
+    override fun addChild(child: View) = addChild(child, listOf(Positioning.ALIGN_PARENT_TOP), this)
 
     override fun removeChild(child: View): Boolean {
         val index = children.indexOf(child)

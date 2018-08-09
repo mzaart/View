@@ -2,8 +2,12 @@ plugins {
     id 'kotlin-platform-jvm' version '1.2.60'
 }
 repositories {
+    jcenter()
     mavenCentral()
+    maven { url "https://kotlin.bintray.com/kotlinx" }
 }
+
+//apply plugin: 'kotlinx-serialization'
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
@@ -11,6 +15,8 @@ dependencies {
     testCompile "junit:junit:4.12"
     testCompile "org.jetbrains.kotlin:kotlin-test"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit"
+
+    compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.6.1"
 }
 
 compileKotlin {

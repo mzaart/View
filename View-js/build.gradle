@@ -2,7 +2,9 @@ plugins {
     id 'kotlin-platform-js' version '1.2.60'
 }
 repositories {
+    jcenter()
     mavenCentral()
+    maven { url "https://kotlin.bintray.com/kotlinx" }
 }
 
 dependencies {
