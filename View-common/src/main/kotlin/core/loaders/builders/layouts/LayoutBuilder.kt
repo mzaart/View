@@ -6,7 +6,20 @@ import core.views.layouts.Layout
 
 abstract class LayoutBuilder<L: Layout>: ViewBuilder<L>() {
 
-    open fun addChild(child: View, content: Map<String, String>) {
-        view.addChild(child)
+    protected val children: MutableList<Pair<View, Map<String, String>>> = mutableListOf()
+
+    fun addChild(child: View, childKeys: Map<String, String>): LayoutBuilder<L> {
+        children += child to childKeys
+        return this
+    }
+
+    open fun addChildren() {
+        children.forEach { view.addChild(it.first) }
+    }
+
+    override fun build(): L {
+        val layout = super.build()
+        addChildren()
+        return layout
     }
 }

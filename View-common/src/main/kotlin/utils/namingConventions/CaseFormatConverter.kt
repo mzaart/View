@@ -1,5 +1,8 @@
 package utils.namingConventions
 
+import utils.extensions.isUpperCase
+import utils.validators.conditions.StringConditions
+
 class CaseFormatConverter {
 
     enum class Format {
@@ -13,33 +16,40 @@ class CaseFormatConverter {
 
         fun convert(from: Format, to: Format, str: String): String {
             return when (Pair(from, to)) {
-                Pair(Format.UPPER_UNDERSCORE, Format.LOWER_UNDERSCORE)
+                Format.UPPER_UNDERSCORE to Format.LOWER_UNDERSCORE
                     -> convertUpperUnderscoreToLowerUnderscore(str)
-                Pair(Format.LOWER_UNDERSCORE, Format.UPPER_UNDERSCORE)
+                Format.LOWER_UNDERSCORE to Format.UPPER_UNDERSCORE
                     -> convertLowerUnderscoreToUpperUnderscore(str)
+                Format.LOWER_CAMEL to Format.LOWER_UNDERSCORE
+                    -> convertLowerCamelToLowerUnderscore(str)
                 else -> throw NotImplementedError("Conversion from $from to $to is not supported yet")
             }
         }
 
         private fun convertUpperUnderscoreToLowerUnderscore(str: String): String {
-            isFormatValid(str, Format.UPPER_UNDERSCORE)
+            isFormatValid(str, StringConditions.UPPER_UNDERSCORE)
             return str.toLowerCase()
         }
 
         private fun convertLowerUnderscoreToUpperUnderscore(str: String): String {
-            isFormatValid(str, Format.LOWER_UNDERSCORE)
-           return str.toUpperCase()
+            isFormatValid(str, StringConditions.LOWER_UNDERSCORE)
+            return str.toUpperCase()
         }
 
-        private fun isFormatValid(str: String, format: Format) {
-            val isValid = when (format) {
-                CaseFormatConverter.Format.LOWER_CAMEL -> """^[a-z][a-zA-Z0-9]*${'$'}"""
-                CaseFormatConverter.Format.UPPER_CAMEL -> """^[A-Z][a-zA-Z0-9]*${'$'}"""
-                CaseFormatConverter.Format.LOWER_UNDERSCORE -> """^([a-z]|\d)+(_([a-z]|\d)+)*${'$'}"""
-                CaseFormatConverter.Format.UPPER_UNDERSCORE -> """^([A-Z]|\d)+(_([A-Z]|\d)+)*${'$'}"""
-            }.toRegex().matches(str)
+        private fun convertLowerCamelToLowerUnderscore(str: String): String {
+            isFormatValid(str, StringConditions.LOWER_CAMEL)
+            val bldr = StringBuilder()
+            str.forEach { c ->
+                if (c.isUpperCase()) {
+                    bldr.append('_')
+                }
+                bldr.append(c.toLowerCase())
+            }
+            return bldr.toString()
+        }
 
-            if (!isValid) {
+        private fun isFormatValid(str: String, format: StringConditions) {
+            if (!format.isValid(str)) {
                 throw IllegalArgumentException("String $str is not of format $format")
             }
         }

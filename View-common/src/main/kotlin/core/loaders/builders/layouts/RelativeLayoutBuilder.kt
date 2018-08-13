@@ -1,51 +1,65 @@
 package core.loaders.builders.layouts
 
-import core.loaders.InvalidViewTreeException
-import core.loaders.Key
-import core.views.View
+import core.loaders.IllegalViewTreeException
+import core.loaders.keys.ViewKeys
+import core.loaders.keys.delegates.nullable.BoolKey
+import core.loaders.keys.delegates.nullable.IdKey
 import core.views.layouts.RelativeLayout
-import utils.lowerUnderscoreIsEnum
-import utils.lowerUnderscoreToEnum
+import utils.extensions.nonNull
+import kotlin.reflect.KProperty
 
-typealias RK = RelativeLayoutBuilder.Keys
+typealias RP = RelativeLayout.Positioning
 
 class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
 
-    enum class Keys: Key {
-        ALIGN_PARENT_TOP,
-        ALIGN_PARENT_BOTTOM,
-        ALIGN_PARENT_START,
-        ALIGN_PARENT_END,
-        TOP_OF,
-        BOTTOM_OF,
-        START_OF,
-        END_OF,
-        CENTER_HORIZONTAL,
-        CENTER_VERTICAL
+    private class RelativeLayoutChild: ViewKeys() {
+        val alignParentTop by BoolKey()
+        val alignParentBottom by BoolKey()
+        val alignParentStart by BoolKey()
+        val alignParentEnd by BoolKey()
+        val center by BoolKey()
+        val centerHorizontal by BoolKey()
+        val centerVertical by BoolKey()
+
+        val topOf by IdKey()
+        val bottomOf by IdKey()
+        val startOf by IdKey()
+        val endOf by IdKey()
+
+        override val conflictingKeys: Set<Set<KProperty<*>>> = setOf(
+                setOf(::alignParentTop, ::alignParentBottom, ::topOf, ::bottomOf, ::centerVertical, ::center),
+                setOf(::alignParentStart, ::alignParentEnd, ::startOf, ::endOf, ::centerHorizontal, ::center)
+        )
     }
 
     override val view = RelativeLayout()
-    private val conflictingKeys: List<List<RK>> = listOf(
-            listOf(RK.TOP_OF, RK.BOTTOM_OF, RK.ALIGN_PARENT_TOP, RK.ALIGN_PARENT_BOTTOM, RK.CENTER_VERTICAL),
-            listOf(RK.ALIGN_PARENT_START, RK.ALIGN_PARENT_END, RK.START_OF, RK.END_OF, RK.CENTER_HORIZONTAL)
-    )
+    
+    override fun addChildren() {
+        children.forEach { pair ->
+            val pos: MutableList<Pair<RP, Int>> = mutableListOf()
+            val keys = RelativeLayoutChild()
+            keys.keys = pair.second
 
-    override fun addChild(child: View, content: Map<String, String>) {
-        val rKeys = content.keys.filter { k -> k.lowerUnderscoreIsEnum<RK>() }
-                .map { k -> k.lowerUnderscoreToEnum<RK>() }
+            keys.apply {
+                alignParentTop.nonNull { pos += RP.ALIGN_PARENT_TOP to view.id }
+                alignParentBottom.nonNull { pos += RP.ALIGN_PARENT_BOTTOM to view.id }
+                alignParentStart.nonNull { pos += RP.ALIGN_PARENT_START to view.id }
+                alignParentEnd.nonNull { pos += RP.ALIGN_PARENT_END to view.id }
+                center.nonNull { pos += listOf(RP.CENTER_VERTICAL to view.id, RP.CENTER_HORIZONTAL to view.id) }
+                centerHorizontal.nonNull { pos += RP.CENTER_HORIZONTAL to view.id }
+                centerVertical.nonNull { pos += RP.CENTER_VERTICAL to view.id }
 
-        // check for conflicting keys
-        for (i in 0 until rKeys.size) {
-            for (j in i+1 until rKeys.size) {
-                val l1 = conflictingKeys.first {list ->  list.contains(rKeys[i])}
-                val l2 = conflictingKeys.first {list ->  list.contains(rKeys[j])}
-                if (l1 == l2) {
-                    throw InvalidViewTreeException(
-                            "RelativeLayout Keys ${rKeys[i]} and ${rKeys[j]} can not exist together")
-                }
+                topOf.nonNull { pos += RP.TOP_OF to assignId(it) }
+                bottomOf.nonNull { pos += RP.BOTTOM_OF to assignId(it) }
+                startOf.nonNull { pos += RP.START_OF to assignId(it) }
+                endOf.nonNull { pos += RP.END_OF to assignId(it) }
             }
+
+            view.addChild(pair.first, pos)
         }
 
-        view.addChild(view)
     }
+
+    private fun assignId(id: Int) = if (view.children().any { id == it.id }) id
+            else throw IllegalViewTreeException("Positioning View relative to a non-existent View")
 }
