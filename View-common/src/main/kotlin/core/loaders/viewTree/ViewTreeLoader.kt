@@ -1,9 +1,9 @@
-import core.loaders.IllegalViewTreeException
-import core.loaders.builders.ViewBuilder
+package core.loaders.viewTree
+
 import core.loaders.builders.layouts.LayoutBuilder
 import core.loaders.builders.layouts.LinearLayoutBuilder
-import core.loaders.viewTree.LayoutNode
-import core.loaders.viewTree.Node
+import core.loaders.viewTree.nodes.LayoutNode
+import core.loaders.viewTree.nodes.Node
 import core.providers.viewBuilderProviders.ViewBuilderProvider
 import core.views.layouts.Layout
 import di.Inject

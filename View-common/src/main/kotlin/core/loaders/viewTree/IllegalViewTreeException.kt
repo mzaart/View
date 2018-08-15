@@ -1,4 +1,4 @@
-package core.loaders
+package core.loaders.viewTree
 
 class IllegalViewTreeException(message: String): RuntimeException(message) {
 

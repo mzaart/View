@@ -1,7 +1,7 @@
 package core.loaders.builders
 
 import core.loaders.Ids
-import core.loaders.IllegalViewTreeException
+import core.loaders.viewTree.IllegalViewTreeException
 import core.loaders.keys.ViewKeys
 import core.loaders.keys.delegates.nullable.*
 import core.views.View
@@ -20,7 +20,7 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
 
     private val visibility by EnumKey<View.Visibility>()
     private val disabled by BoolKey()
-    val isCard by BoolKey()
+    private val isCard by BoolKey()
 
     private val marginTop by DoubleKey()
     private val marginBottom by DoubleKey()
@@ -35,6 +35,10 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
     private val paddingEnd by DoubleKey()
     private val paddingHorizontal by DoubleKey()
     private val paddingVertical by DoubleKey()
+
+    // style attrs
+    private val backgroundColor by ColorKey()
+    private val hasShadow by BoolKey()
 
     override val conflictingKeys: Set<Set<KProperty<*>>> = setOf(
             setOf(::marginTop, ::marginVertical),
@@ -109,5 +113,8 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
             paddingStart.nonNull { view.paddingStart = it }
             paddingEnd.nonNull { view.paddingEnd = it }
         }
+
+        backgroundColor.nonNull { view.style.backgroundColor = it }
+        hasShadow.nonNull { view.style.hasShadow = it }
     }
 }

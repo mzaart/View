@@ -1,6 +1,6 @@
 package core.loaders.keys.delegates.required
 
-import core.loaders.IllegalViewTreeException
+import core.loaders.viewTree.IllegalViewTreeException
 import core.loaders.keys.HasKeys
 import utils.extensions.nameAsLowerUnderscore
 import kotlin.properties.ReadOnlyProperty

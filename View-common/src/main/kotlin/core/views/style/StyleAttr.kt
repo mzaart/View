@@ -1,5 +1,5 @@
-package views.style
+package core.views.style
 
 @Retention(AnnotationRetention.RUNTIME)
-@Target(AnnotationTarget.FIELD)
+@Target(AnnotationTarget.PROPERTY)
 annotation class StyleAttr

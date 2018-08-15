@@ -1,8 +1,9 @@
 package utils.extensions
 
 import utils.namingConventions.CaseFormatConverter
+import utils.namingConventions.CaseFormatConverter.Format
 
 fun String.toID() = this.hashCode()
 
 fun String.lowerCamelToLowerUnderscore()
-        = CaseFormatConverter.convert(CaseFormatConverter.Format.LOWER_CAMEL, CaseFormatConverter.Format.LOWER_UNDERSCORE, this)
+        = CaseFormatConverter.convert(Format.LOWER_CAMEL, Format.LOWER_UNDERSCORE, this)

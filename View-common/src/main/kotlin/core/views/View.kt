@@ -3,10 +3,11 @@ package core.views
 import core.views.events.ViewEvents
 import core.views.layouts.Layout
 import core.views.propertyDelegates.*
+import core.views.style.Style
 import utils.validators.Validator
 import utils.validators.conditions.DC
 
-abstract class View {
+abstract class View: HasId {
 
     enum class Visibility {
         VISIBLE,
@@ -14,7 +15,7 @@ abstract class View {
         GONE
     }
 
-    var id: Int by LateInitVal()
+    final override var id: Int by LateInitVal()
 
     var width: Double? by NullableViewProperty()
     var height: Double? by NullableViewProperty()
@@ -38,4 +39,6 @@ abstract class View {
     var onClickListener by EventListener(ViewEvents.ON_CLICK)
     var onLongClickListener by EventListener(ViewEvents.ON_LONG_CLICK)
     var onResize by EventListener(ViewEvents.ON_RESIZE)
+
+    open val style = Style()
 }

@@ -1,7 +1,7 @@
 package core.views.propertyDelegates
 
+import core.views.HasId
 import utils.validators.Validator
-import core.views.View
 import kotlin.reflect.KProperty
 
 class ViewProperty<T: Any>(
@@ -9,7 +9,7 @@ class ViewProperty<T: Any>(
         private val validator: Validator<T>? = null
 ): AbstractViewProperty<T>(value) {
 
-    override operator fun setValue(thisRef: View, property: KProperty<*>, value: T) {
+    override operator fun setValue(thisRef: HasId, property: KProperty<*>, value: T) {
         validator?.validate(value)
         this.value = value
         renderer.invalidate(thisRef.id)

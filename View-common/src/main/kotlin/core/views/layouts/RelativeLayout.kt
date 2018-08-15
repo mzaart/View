@@ -21,6 +21,7 @@ class RelativeLayout: Layout() {
 
     fun addChild(child: View, positionings: List<Pair<Positioning, Int>>): Boolean {
         positions += positionings
+        child.style.extendStyle(style)
         return children.add(child)
     }
 

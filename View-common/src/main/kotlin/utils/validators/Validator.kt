@@ -3,8 +3,8 @@ package utils.validators
 import utils.validators.conditions.Condition
 
 class Validator<T: Any>(
-        private val conditions: List<Condition<T>>,
-        private val strategy: Strategy
+        private val strategy: Strategy,
+        private vararg val conditions: Condition<T>
 ) {
 
     enum class Strategy {
@@ -13,7 +13,7 @@ class Validator<T: Any>(
         CONSENSUS // equivalent to democracy
     }
 
-    constructor(vararg conditions: Condition<T>): this(conditions.toList(), Strategy.UNANIMOUS)
+    constructor(vararg conditions: Condition<T>): this(Strategy.UNANIMOUS, *conditions)
 
     fun validate(value: T) {
         var countSuccess = 0
