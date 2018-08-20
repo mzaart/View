@@ -8,7 +8,7 @@ import kotlin.reflect.KProperty
 
 abstract class ViewKeys: HasKeys {
 
-    override var keys: Map<String, String> by Delegates.vetoable(mapOf()) { _, _, newVal ->
+    override var keys: MutableMap<String, String> by Delegates.vetoable(mutableMapOf()) { _, _, newVal ->
         newVal.keys.forEach { key ->
             if (!StringConditions.LOWER_UNDERSCORE.isValid(key)) {
                 throw IllegalViewTreeException("Key $key is not in a lower_underscore format")

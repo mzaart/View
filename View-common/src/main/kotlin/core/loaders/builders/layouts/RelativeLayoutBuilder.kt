@@ -3,28 +3,29 @@ package core.loaders.builders.layouts
 import core.loaders.viewTree.IllegalViewTreeException
 import core.loaders.keys.ViewKeys
 import core.loaders.keys.delegates.nullable.BoolKey
-import core.loaders.keys.delegates.nullable.IdKey
+import core.loaders.keys.delegates.nullable.StringKey
 import core.views.layouts.RelativeLayout
 import utils.extensions.nonNull
+import utils.extensions.toID
 import kotlin.reflect.KProperty
 
 typealias RP = RelativeLayout.Positioning
 
 class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
 
-    private class RelativeLayoutChild: ViewKeys() {
-        val alignParentTop by BoolKey()
-        val alignParentBottom by BoolKey()
-        val alignParentStart by BoolKey()
-        val alignParentEnd by BoolKey()
-        val center by BoolKey()
-        val centerHorizontal by BoolKey()
-        val centerVertical by BoolKey()
+     class Child: ViewKeys() {
+        var alignParentTop by BoolKey()
+        var alignParentBottom by BoolKey()
+        var alignParentStart by BoolKey()
+        var alignParentEnd by BoolKey()
+        var center by BoolKey()
+        var centerHorizontal by BoolKey()
+        var centerVertical by BoolKey()
 
-        val topOf by IdKey()
-        val bottomOf by IdKey()
-        val startOf by IdKey()
-        val endOf by IdKey()
+        var topOf by StringKey()
+        var bottomOf by StringKey()
+        var startOf by StringKey()
+        var endOf by StringKey()
 
         override val conflictingKeys: Set<Set<KProperty<*>>> = setOf(
                 setOf(::alignParentTop, ::alignParentBottom, ::topOf, ::bottomOf, ::centerVertical, ::center),
@@ -37,8 +38,8 @@ class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
     override fun addChildren() {
         children.forEach { pair ->
             val pos: MutableList<Pair<RP, Int>> = mutableListOf()
-            val keys = RelativeLayoutChild()
-            keys.keys = pair.second
+            val keys = Child()
+            keys.keys = pair.second.toMutableMap()
 
             keys.apply {
                 alignParentTop.nonNull { pos += RP.ALIGN_PARENT_TOP to view.id }
@@ -49,10 +50,10 @@ class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
                 centerHorizontal.nonNull { pos += RP.CENTER_HORIZONTAL to view.id }
                 centerVertical.nonNull { pos += RP.CENTER_VERTICAL to view.id }
 
-                topOf.nonNull { pos += RP.TOP_OF to assignId(it) }
-                bottomOf.nonNull { pos += RP.BOTTOM_OF to assignId(it) }
-                startOf.nonNull { pos += RP.START_OF to assignId(it) }
-                endOf.nonNull { pos += RP.END_OF to assignId(it) }
+                topOf.nonNull { pos += RP.TOP_OF to assignId(it.toID()) }
+                bottomOf.nonNull { pos += RP.BOTTOM_OF to assignId(it.toID()) }
+                startOf.nonNull { pos += RP.START_OF to assignId(it.toID()) }
+                endOf.nonNull { pos += RP.END_OF to assignId(it.toID()) }
             }
 
             view.addChild(pair.first, pos)
@@ -61,5 +62,5 @@ class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
     }
 
     private fun assignId(id: Int) = if (view.children().any { id == it.id }) id
-            else throw IllegalViewTreeException("Positioning View relative to a non-existent View")
+            else throw IllegalViewTreeException("Positioning DslView relative to a non-existent DslView")
 }

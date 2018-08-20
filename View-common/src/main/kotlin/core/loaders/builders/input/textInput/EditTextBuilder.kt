@@ -11,11 +11,11 @@ class EditTextBuilder: ViewBuilder<EditText>() {
 
     override val view = EditText()
 
-    private val text by StringKey()
+    var text by StringKey()
 
     // style keys
-    private val fontSize by IntKey()
-    private val fontColor by ColorKey()
+    var fontSize by IntKey()
+    var fontColor by ColorKey()
 
     override fun applyAttributes() {
         text.nonNull { view.text = it }

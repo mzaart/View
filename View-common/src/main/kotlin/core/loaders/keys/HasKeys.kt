@@ -2,5 +2,5 @@ package core.loaders.keys
 
 interface HasKeys {
 
-    var keys: Map<String, String>
+    var keys: MutableMap<String, String>
 }

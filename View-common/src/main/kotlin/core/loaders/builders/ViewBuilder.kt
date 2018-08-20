@@ -7,38 +7,39 @@ import core.loaders.keys.delegates.nullable.*
 import core.views.View
 import di.Inject
 import utils.extensions.nonNull
+import utils.extensions.toID
 import kotlin.reflect.KProperty
 
 abstract class ViewBuilder<V: View>: ViewKeys() {
 
     protected val ids by Inject(Ids::class)
 
-    private val id by IdKey()
+    var id by StringKey()
 
-    private val width by DoubleKey()
-    private val height by DoubleKey()
+    var width by DoubleKey()
+    var height by DoubleKey()
 
-    private val visibility by EnumKey<View.Visibility>()
-    private val disabled by BoolKey()
-    private val isCard by BoolKey()
+    var visibility by EnumKey<View.Visibility>()
+    var disabled by BoolKey()
+    var isCard by BoolKey()
 
-    private val marginTop by DoubleKey()
-    private val marginBottom by DoubleKey()
-    private val marginStart by DoubleKey()
-    private val marginEnd by DoubleKey()
-    private val marginHorizontal by DoubleKey()
-    private val marginVertical by DoubleKey()
+    var marginTop by DoubleKey()
+    var marginBottom by DoubleKey()
+    var marginStart by DoubleKey()
+    var marginEnd by DoubleKey()
+    var marginHorizontal by DoubleKey()
+    var marginVertical by DoubleKey()
 
-    private val paddingTop by DoubleKey()
-    private val paddingBottom by DoubleKey()
-    private val paddingStart by DoubleKey()
-    private val paddingEnd by DoubleKey()
-    private val paddingHorizontal by DoubleKey()
-    private val paddingVertical by DoubleKey()
+    var paddingTop by DoubleKey()
+    var paddingBottom by DoubleKey()
+    var paddingStart by DoubleKey()
+    var paddingEnd by DoubleKey()
+    var paddingHorizontal by DoubleKey()
+    var paddingVertical by DoubleKey()
 
     // style attrs
-    private val backgroundColor by ColorKey()
-    private val hasShadow by BoolKey()
+    var backgroundColor by ColorKey()
+    var hasShadow by BoolKey()
 
     override val conflictingKeys: Set<Set<KProperty<*>>> = setOf(
             setOf(::marginTop, ::marginVertical),
@@ -54,7 +55,7 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
     protected abstract val view: V
 
     fun applyKeys(keys: Map<String, String>): ViewBuilder<V> {
-        this.keys = keys
+        this.keys = keys.toMutableMap()
         return this
     }
 
@@ -67,7 +68,7 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
     open fun applyAttributes() {}
 
     private fun applyCommonViewAttrs() {
-        val id = this.id
+        val id = this.id?.toID()
         if (id == null) {
             view.id = ids.newId()
         } else {

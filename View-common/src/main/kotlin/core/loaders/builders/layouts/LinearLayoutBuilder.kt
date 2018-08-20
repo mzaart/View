@@ -5,7 +5,7 @@ import core.views.layouts.LinearLayout
 
 open class LinearLayoutBuilder: LayoutBuilder<LinearLayout>() {
 
-    private val direction by RequiredEnumKey<LinearLayout.Direction>()
+    var direction by RequiredEnumKey<LinearLayout.Direction>()
 
     override val view = LinearLayout()
 
