@@ -1,11 +1,15 @@
 package di
 
-import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
 
-class Inject<T: Any>(private val type: KClass<T>): ReadOnlyProperty<Any, T> {
+expect inline fun <reified T: Any> inject(tag: String? = null): DelegateProvider<T>
 
-    override operator fun getValue(thisRef: Any, property: KProperty<*>) = Container().resolveDependency(type)
+
+class DelegateProvider<T: Any>(val delegateFactory: (thisRef: Any?, prop: KProperty<Any?>) -> Lazy<T>) {
+
+    operator fun provideDelegate(
+            thisRef: Any?,
+            prop: KProperty<*>
+    ) = delegateFactory(thisRef, prop)
 }

@@ -5,52 +5,40 @@ import core.loaders.viewTree.IllegalViewTreeException
 import core.loaders.keys.ViewKeys
 import core.loaders.keys.delegates.nullable.*
 import core.views.View
-import di.Inject
+import di.inject
 import utils.extensions.nonNull
 import utils.extensions.toID
-import kotlin.reflect.KProperty
 
 abstract class ViewBuilder<V: View>: ViewKeys() {
 
-    protected val ids by Inject(Ids::class)
+    protected val ids by inject<Ids>()
 
     var id by StringKey()
 
     var width by DoubleKey()
     var height by DoubleKey()
 
-    var visibility by EnumKey<View.Visibility>()
+    var visibility by EnumKey(View.Visibility.values())
     var disabled by BoolKey()
     var isCard by BoolKey()
 
-    var marginTop by DoubleKey()
-    var marginBottom by DoubleKey()
-    var marginStart by DoubleKey()
-    var marginEnd by DoubleKey()
-    var marginHorizontal by DoubleKey()
-    var marginVertical by DoubleKey()
+    var marginTop by DoubleKey("marginVertical")
+    var marginBottom by DoubleKey("marginVertical")
+    var marginStart by DoubleKey("marginHorizontal")
+    var marginEnd by DoubleKey("marginHorizontal")
+    var marginHorizontal by DoubleKey("marginStart", "marginEnd")
+    var marginVertical by DoubleKey("marginTop", "marginBottom")
 
-    var paddingTop by DoubleKey()
-    var paddingBottom by DoubleKey()
-    var paddingStart by DoubleKey()
-    var paddingEnd by DoubleKey()
-    var paddingHorizontal by DoubleKey()
-    var paddingVertical by DoubleKey()
+    var paddingTop by DoubleKey("paddingVertical")
+    var paddingBottom by DoubleKey("paddingVertical")
+    var paddingStart by DoubleKey("paddingHorizontal")
+    var paddingEnd by DoubleKey("paddingHorizontal")
+    var paddingHorizontal by DoubleKey("paddingStart", "paddingEnd")
+    var paddingVertical by DoubleKey("paddingTop", "paddingBottom")
 
     // style attrs
     var backgroundColor by ColorKey()
     var hasShadow by BoolKey()
-
-    override val conflictingKeys: Set<Set<KProperty<*>>> = setOf(
-            setOf(::marginTop, ::marginVertical),
-            setOf(::marginBottom, ::marginVertical),
-            setOf(::marginStart, ::marginHorizontal),
-            setOf(::marginEnd, ::marginHorizontal),
-            setOf(::paddingTop, ::paddingVertical),
-            setOf(::paddingBottom, ::paddingVertical),
-            setOf(::paddingStart, ::paddingHorizontal),
-            setOf(::paddingEnd, ::paddingHorizontal)
-    )
 
     protected abstract val view: V
 

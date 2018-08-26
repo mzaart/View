@@ -4,7 +4,4 @@ import core.views.View
 
 typealias EventListener = (View) -> Unit
 
-interface Event {
-
-    fun getName(): String
-}
+interface Event

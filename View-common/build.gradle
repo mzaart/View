@@ -1,4 +1,5 @@
 
+
 plugins {
     id 'kotlin-platform-common' version '1.2.60'
 }
@@ -13,4 +14,5 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-common"
     testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common"
     testCompile "org.jetbrains.kotlin:kotlin-test-common"
+    testImplementation "io.mockk:mockk-common:1.8.6"
 }

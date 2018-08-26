@@ -5,14 +5,17 @@ import core.loaders.keys.delegates.AbstractKey
 import utils.extensions.lowerCamelToLowerUnderscore
 import kotlin.reflect.KProperty
 
-open class Key<T>(private val getKeyValue: (String) -> T): AbstractKey<T?>() {
+open class Key<T>(
+        private val getKeyValue: (String) -> T,
+        vararg conflicts: String
+): AbstractKey<T?>(*conflicts) {
 
     override fun getValue(thisRef: HasKeys, property: KProperty<*>): T? {
-        if (mapIndependentValue != null) {
-            return mapIndependentValue as T
+        val keyVal = thisRef.keys[property.name]
+        return when (keyVal) {
+            null -> null
+            is String -> getKeyValue(keyVal)
+            else -> keyVal as T
         }
-        val propName = property.name.lowerCamelToLowerUnderscore()
-        val keyVal = thisRef.keys[propName]
-        return if (keyVal == null) null else getKeyValue(keyVal)
     }
 }

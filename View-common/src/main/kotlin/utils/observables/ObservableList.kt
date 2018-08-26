@@ -2,6 +2,8 @@ package utils.observables
 
 class ObservableList<E>(private val onChangeListener: () -> Unit): MutableList<E> {
 
+    // todo consider refactoring using class delegates
+
     private val list: MutableList<E> = mutableListOf()
 
     override val size: Int

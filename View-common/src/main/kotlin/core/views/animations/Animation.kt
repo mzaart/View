@@ -1,6 +1,6 @@
 package core.views.animations
 
-import di.Inject
+import di.inject
 import kotlin.properties.Delegates
 
 abstract class Animation {
@@ -9,7 +9,7 @@ abstract class Animation {
         const val DEFAULT_INTERVAL = 10
     }
 
-    protected val timer by Inject(Timer::class)
+    protected val timer by inject<Timer>()
 
     var interval = Animation.DEFAULT_INTERVAL
     var duration: Double by Delegates.notNull()

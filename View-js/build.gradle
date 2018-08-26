@@ -7,8 +7,24 @@ repositories {
     maven { url "https://kotlin.bintray.com/kotlinx" }
 }
 
+apply plugin: 'kotlin2js'
+
+compileKotlin2Js {
+    kotlinOptions{
+        moduleKind = 'umd'
+        metaInfo = true
+    }
+}
+
+compileTestKotlin2Js {
+    kotlinOptions {
+        moduleKind = 'umd'
+    }
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js"
     expectedBy project(":View-common")
     testCompile "org.jetbrains.kotlin:kotlin-test-js"
+    implementation 'org.kodein.di:kodein-di-erased-js:5.2.0'
 }

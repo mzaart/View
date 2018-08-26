@@ -22,6 +22,8 @@ class CaseFormatConverter {
                     -> convertLowerUnderscoreToUpperUnderscore(str)
                 Format.LOWER_CAMEL to Format.LOWER_UNDERSCORE
                     -> convertLowerCamelToLowerUnderscore(str)
+                Format.UPPER_CAMEL to Format.LOWER_UNDERSCORE
+                    -> convertUpperCamelToLowerUnderscore(str)
                 else -> throw NotImplementedError("Conversion from $from to $to is not supported yet")
             }
         }
@@ -46,6 +48,14 @@ class CaseFormatConverter {
                 bldr.append(c.toLowerCase())
             }
             return bldr.toString()
+        }
+
+        private fun convertUpperCamelToLowerUnderscore(str: String): String {
+            isFormatValid(str, StringConditions.UPPER_CAMEL)
+            return if (str.length == 1) str[0].toLowerCase().toString() else {
+                val lowerCamel = str[0].toLowerCase() + str.substring(1)
+                return convertLowerCamelToLowerUnderscore(str.trimStart())
+            }
         }
 
         private fun isFormatValid(str: String, format: StringConditions) {

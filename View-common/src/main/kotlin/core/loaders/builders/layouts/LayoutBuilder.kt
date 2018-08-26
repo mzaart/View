@@ -6,9 +6,9 @@ import core.views.layouts.Layout
 
 abstract class LayoutBuilder<L: Layout>: ViewBuilder<L>() {
 
-    protected val children: MutableList<Pair<View, Map<String, String>>> = mutableListOf()
+    protected val children: MutableList<Pair<View, Map<String, Any?>>> = mutableListOf()
 
-    fun addChild(child: View, childKeys: Map<String, String>): LayoutBuilder<L> {
+    fun addChild(child: View, childKeys: Map<String, Any?>): LayoutBuilder<L> {
         children += child to childKeys
         return this
     }

@@ -7,7 +7,7 @@ import core.views.style.Style
 import utils.validators.Validator
 import utils.validators.conditions.DC
 
-abstract class View: HasId {
+abstract class View {
 
     enum class Visibility {
         VISIBLE,
@@ -15,7 +15,7 @@ abstract class View: HasId {
         GONE
     }
 
-    final override var id: Int by LateInitVal()
+    var id: Int by LateInitVal()
 
     var width: Double? by NullableViewProperty()
     var height: Double? by NullableViewProperty()

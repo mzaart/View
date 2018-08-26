@@ -7,16 +7,17 @@ repositories {
     maven { url "https://kotlin.bintray.com/kotlinx" }
 }
 
-//apply plugin: 'kotlinx-serialization'
-
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     expectedBy project(":View-common")
     testCompile "junit:junit:4.12"
     testCompile "org.jetbrains.kotlin:kotlin-test"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit"
+    testImplementation "io.mockk:mockk:1.8.6"
+
 
     compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.6.1"
+    implementation 'org.kodein.di:kodein-di-erased-jvm:5.2.0'
 }
 
 compileKotlin {

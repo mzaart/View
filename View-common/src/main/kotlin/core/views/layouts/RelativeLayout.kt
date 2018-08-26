@@ -22,13 +22,13 @@ class RelativeLayout: Layout() {
     fun addChild(child: View, positionings: List<Pair<Positioning, Int>>): Boolean {
         positions += positionings
         child.style.extendStyle(style)
-        return children.add(child)
+        return childViews.add(child)
     }
 
     override fun addChild(child: View) = addChild(child, listOf(Positioning.ALIGN_PARENT_TOP to id))
 
     override fun removeChild(child: View): Boolean {
-        val index = children.indexOf(child)
+        val index = childViews.indexOf(child)
         if (index != -1) {
             positions.removeAt(index)
             return true
