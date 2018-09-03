@@ -23,11 +23,11 @@ class Validator<T: Any>(
         val isValid = when (strategy) {
             Strategy.UNANIMOUS -> countFailed == 0
             Strategy.AFFIRMATIVE -> countSuccess > 0
-            Strategy.CONSENSUS -> countSuccess > countFailed
+            Strategy.CONSENSUS -> countSuccess >= countFailed
         } || conditions.isEmpty()
 
         if (!isValid) {
-            throw ValidationException(value, conditions as List<Condition<Any>>, strategy)
+            throw ValidationException(value, conditions.map { it.toString() }, strategy)
         }
     }
 }

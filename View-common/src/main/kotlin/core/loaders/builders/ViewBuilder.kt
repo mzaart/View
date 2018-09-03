@@ -13,33 +13,40 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
 
     protected val ids by inject<Ids>()
 
-    var id by StringKey()
+    var id by StringKey
 
-    var width by DoubleKey()
-    var height by DoubleKey()
+    var width by DoubleKey
+    var height by DoubleKey
 
     var visibility by EnumKey(View.Visibility.values())
-    var disabled by BoolKey()
-    var isCard by BoolKey()
+    var disabled by BoolKey
+    var isCard by BoolKey
 
-    var marginTop by DoubleKey("marginVertical")
-    var marginBottom by DoubleKey("marginVertical")
-    var marginStart by DoubleKey("marginHorizontal")
-    var marginEnd by DoubleKey("marginHorizontal")
-    var marginHorizontal by DoubleKey("marginStart", "marginEnd")
-    var marginVertical by DoubleKey("marginTop", "marginBottom")
+    var marginTop by DoubleKey
+    var marginBottom by DoubleKey
+    var marginStart by DoubleKey
+    var marginEnd by DoubleKey
+    var marginHorizontal by DoubleKey
+    var marginVertical by DoubleKey
 
-    var paddingTop by DoubleKey("paddingVertical")
-    var paddingBottom by DoubleKey("paddingVertical")
-    var paddingStart by DoubleKey("paddingHorizontal")
-    var paddingEnd by DoubleKey("paddingHorizontal")
-    var paddingHorizontal by DoubleKey("paddingStart", "paddingEnd")
-    var paddingVertical by DoubleKey("paddingTop", "paddingBottom")
+    var paddingTop by DoubleKey
+    var paddingBottom by DoubleKey
+    var paddingStart by DoubleKey
+    var paddingEnd by DoubleKey
+    var paddingHorizontal by DoubleKey
+    var paddingVertical by DoubleKey
 
     // style attrs
-    var backgroundColor by ColorKey()
-    var hasShadow by BoolKey()
+    var backgroundColor by ColorKey
+    var hasShadow by BoolKey
 
+    open val conflictingKeys = setOf(
+            setOf("marginVertical", "marginTop", "marginBottom"),
+            setOf("marginHorizontal", "marginStart","marginEnd"),
+            setOf("paddingVertical", "paddingTop", "paddingBottom"),
+            setOf("paddingHorizontal", "paddingStart","paddingEnd")
+    )
+    
     protected abstract val view: V
 
     fun applyKeys(keys: Map<String, String>): ViewBuilder<V> {
@@ -47,15 +54,26 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
         return this
     }
 
-    open fun build(): V {
-        applyCommonViewAttrs()
-        applyAttributes()
+    fun build(): V {
+        checkConflicts()
+        applyViewAttrs()
+        beforeProduction()
         return view
     }
 
-    open fun applyAttributes() {}
+    private fun checkConflicts() {
+        for (key in keys.keys) {
+            val conflictGrps = conflictingKeys.filter { it.contains(key) }
+            for (grp in conflictGrps) {
+                val conflictingKey = grp.firstOrNull { it != key && it in keys.keys }
+                if (conflictingKey != null) {
+                    throw IllegalViewTreeException("Key $key conflicts with key $conflictingKey")
+                }
+            }
+        }
+    }
 
-    private fun applyCommonViewAttrs() {
+    private fun applyViewAttrs() {
         val id = this.id?.toID()
         if (id == null) {
             view.id = ids.newId()
@@ -106,4 +124,6 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
         backgroundColor.nonNull { view.style.backgroundColor = it }
         hasShadow.nonNull { view.style.hasShadow = it }
     }
+
+    protected open fun beforeProduction() {}
 }

@@ -9,12 +9,12 @@ class LateInitVal<T>: ReadWriteProperty<Any, T> {
     private var isSet = false
 
     override fun getValue(thisRef: Any, property: KProperty<*>): T {
-        return value ?: throw RuntimeException("Property is not initialized")
+        return value ?: throw IllegalStateException("Property is not initialized")
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
         if (isSet) {
-            throw RuntimeException("Property is already set")
+            throw IllegalStateException("Property is already set")
         }
         this.value = value
         isSet = true

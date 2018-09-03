@@ -2,7 +2,7 @@ package core.views.style
 
 import core.views.propertyDelegates.LateInitVal
 import utils.validators.Validator
-import utils.validators.conditions.IC
+import utils.validators.conditions.LC
 
 open class Style {
 
@@ -10,7 +10,7 @@ open class Style {
 
     val styleAttrs: MutableMap<String, Any?> = mutableMapOf()
 
-    var backgroundColor: Int? by StyleAttr(Validator(IC.COLOR))
+    var backgroundColor: Long? by StyleAttr(Validator(LC.COLOR))
 
     var hasShadow: Boolean? by StyleAttr()
 

@@ -11,7 +11,10 @@ import di.inject
 abstract class SerializedViewTreeLoader: ViewTreeLoader {
 
     override fun loadViewTree(): Layout {
-        val bldr = LinearLayoutBuilder().applyKeys(mapOf("direction" to "vertical"))
+        val bldr = LinearLayoutBuilder().applyKeys(mapOf(
+                "id" to "ViewTreeRoot",
+                "direction" to "VERTICAL"
+        ))
         visitNode(getRootNode(), bldr as LayoutBuilder<Layout>)
         return bldr.build()
     }
@@ -20,20 +23,18 @@ abstract class SerializedViewTreeLoader: ViewTreeLoader {
 
     private fun visitNode(node: Node, parentBldr: LayoutBuilder<Layout>) {
         val content = node.content
-
-        val typeKey = content["type"] ?: throw IllegalViewTreeException(setOf("type"))
-
-        val builder by inject<ViewBuilder<*>>(content[typeKey]!!)
+        val type = content["type"] ?: throw IllegalViewTreeException(setOf("type"))
+        val builder by inject<ViewBuilder<*>>(type)
 
         if ((builder is LayoutBuilder<*>).xor(node is LayoutNode)) {
-            throw IllegalViewTreeException("The ViewTree node and constructed DslView do not match")
+            throw IllegalViewTreeException("The ViewTree node and constructed View do not match")
         }
 
         if (node is LayoutNode) {
             node.children.forEach { n -> visitNode(n, builder as LayoutBuilder<Layout>) }
         }
 
-        val view = builder.build()
+        val view = builder.applyKeys(content).build()
         parentBldr.addChild(view, content)
     }
 }

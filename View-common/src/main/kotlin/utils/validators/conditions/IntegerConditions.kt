@@ -22,17 +22,5 @@ enum class IntegerConditions: Condition<Int> {
 
     NON_NEGATIVE {
         override fun isValid(value: Int) = value >= 0
-    },
-
-    RGB {
-        override fun isValid(value: Int) = value in 0x000000..0xFFFFFF
-    },
-
-    RGBA {
-        override fun isValid(value: Int) = value in 0x00000000..0xFFFFFFFF
-    },
-
-    COLOR {
-        override fun isValid(value: Int) = RGB.isValid(value) || RGBA.isValid(value)
     }
 }

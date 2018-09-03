@@ -13,23 +13,28 @@ typealias RP = RelativeLayout.Positioning
 class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
 
      class Child: ViewKeys() {
-        var alignParentTop by BoolKey("alignParentBottom", "topOf", "bottomOf", "centerVertical", "center")
-        var alignParentBottom by BoolKey("alignParentTop", "topOf", "bottomOf", "centerVertical", "center")
-        var alignParentStart by BoolKey("alignParentEnd", "startOf", "endOf", "centerHorizontal", "center")
-        var alignParentEnd by BoolKey("alignParentStart", "startOf", "endOf", "centerHorizontal", "center")
-        var center by BoolKey("alignParentTop", "alignParentBottom", "topOf", "bottomOf", "centerVertical")
-        var centerHorizontal by BoolKey("alignParentStart", "alignParentEnd", "startOf", "endOf", "center")
-        var centerVertical by BoolKey("alignParentTop", "alignParentBottom", "topOf", "bottomOf", "center")
+        var alignParentTop by BoolKey
+        var alignParentBottom by BoolKey
+        var alignParentStart by BoolKey
+        var alignParentEnd by BoolKey
+        var center by BoolKey
+        var centerHorizontal by BoolKey
+        var centerVertical by BoolKey
 
-        var topOf by StringKey("alignParentTop", "alignParentBottom", "bottomOf", "centerVertical", "center")
-        var bottomOf by StringKey("alignParentTop", "alignParentBottom", "topOf", "centerVertical", "center")
-        var startOf by StringKey("alignParentStart", "alignParentEnd", "endOf", "centerHorizontal", "center")
-        var endOf by StringKey("alignParentStart", "alignParentEnd", "startOf", "centerHorizontal", "center")
+        var topOf by StringKey
+        var bottomOf by StringKey
+        var startOf by StringKey
+        var endOf by StringKey
     }
 
     override val view = RelativeLayout()
-    
-    override fun addChildren() {
+
+    override val conflictingKeys = setOf(
+            setOf("alignParentTop", "alignParentBottom", "topOf", "bottomOf", "centerVertical", "center"),
+            setOf("alignParentStart", "alignParentEnd", "startOf", "endOf", "centerHorizontal", "center")
+    )
+
+    override fun beforeProduction() {
         children.forEach { pair ->
             val pos: MutableList<Pair<RP, Int>> = mutableListOf()
             val keys = Child()

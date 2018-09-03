@@ -9,7 +9,8 @@ open class LinearLayoutBuilder: LayoutBuilder<LinearLayout>() {
 
     override val view = LinearLayout()
 
-    override fun applyAttributes() {
+    override fun beforeProduction() {
+        super.beforeProduction()
         view.direction = direction
     }
 }

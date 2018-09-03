@@ -13,13 +13,7 @@ abstract class LayoutBuilder<L: Layout>: ViewBuilder<L>() {
         return this
     }
 
-    open fun addChildren() {
+    override fun beforeProduction() {
         children.forEach { view.addChild(it.first) }
-    }
-
-    override fun build(): L {
-        val layout = super.build()
-        addChildren()
-        return layout
     }
 }

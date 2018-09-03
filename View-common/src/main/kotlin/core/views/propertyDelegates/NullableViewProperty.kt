@@ -5,7 +5,7 @@ import utils.validators.Validator
 import kotlin.reflect.KProperty
 
 open class NullableViewProperty<T: Any>(
-        private var value: T? = null,
+        value: T? = null,
         private val validator: Validator<T>? = null
 ): AbstractViewProperty<T?>(value) {
 

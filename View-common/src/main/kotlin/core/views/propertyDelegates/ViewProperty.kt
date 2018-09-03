@@ -6,7 +6,7 @@ import kotlin.reflect.KProperty
 
 // todo come up with a way to avoid autoboxing when using primitive view props
 class ViewProperty<T: Any>(
-        private var value: T,
+        value: T,
         private val validator: Validator<T>? = null
 ): AbstractViewProperty<T>(value) {
 

@@ -6,7 +6,7 @@ import di.inject
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-abstract class AbstractViewProperty<T>(private var value: T): ReadWriteProperty<View, T> {
+abstract class AbstractViewProperty<T>(protected var value: T): ReadWriteProperty<View, T> {
 
     protected val renderer by inject<ViewRenderer>()
 

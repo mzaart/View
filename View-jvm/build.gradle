@@ -14,10 +14,9 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit"
     testImplementation "io.mockk:mockk:1.8.6"
-
-
     compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.6.1"
     implementation 'org.kodein.di:kodein-di-erased-jvm:5.2.0'
+    compile 'org.kodein.di:kodein-di-conf-jvm:5.2.0'
 }
 
 compileKotlin {

@@ -15,4 +15,7 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common"
     testCompile "org.jetbrains.kotlin:kotlin-test-common"
     testImplementation "io.mockk:mockk-common:1.8.6"
+    implementation 'org.kodein.di:kodein-di-erased-common:5.2.0'
+    compile 'org.kodein.di:kodein-di-conf-common:5.2.0'
+    compile 'org.kodein.di:kodein-di-core-common:5.2.0'
 }

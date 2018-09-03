@@ -8,10 +8,6 @@ enum class StringConditions: Condition<String> {
         override fun isValid(value: String) = value.isEmpty()
     },
 
-    WHITE_SPACE {
-        override fun isValid(value: String) = value.isBlank()
-    },
-
     NON_EMPTY {
         override fun isValid(value: String) = value.isNotEmpty()
     },

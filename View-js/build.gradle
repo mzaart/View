@@ -1,5 +1,6 @@
 plugins {
     id 'kotlin-platform-js' version '1.2.60'
+    id "com.moowork.node" version "1.2.0"
 }
 repositories {
     jcenter()
@@ -13,6 +14,7 @@ compileKotlin2Js {
     kotlinOptions{
         moduleKind = 'umd'
         metaInfo = true
+        sourceMap = true
     }
 }
 
@@ -27,4 +29,34 @@ dependencies {
     expectedBy project(":View-common")
     testCompile "org.jetbrains.kotlin:kotlin-test-js"
     implementation 'org.kodein.di:kodein-di-erased-js:5.2.0'
+    compile 'org.kodein.di:kodein-di-conf-js:5.2.0'
 }
+
+task populateNodeModules(type: Copy, dependsOn: compileTestKotlin2Js) {
+
+    from compileKotlin2Js.destinationDir
+
+    configurations.testCompile.each {
+        from zipTree(it.absolutePath).matching { include '*.js' }
+    }
+
+    configurations.compile.each {
+        from zipTree(it.absolutePath).matching { include '*.js' }
+    }
+
+    into "${buildDir}/node_modules"
+}
+
+node {
+    download = true
+}
+
+task yarnInstall(type: YarnTask) {
+    args = ['install']
+}
+
+task runKarma(type: YarnTask, dependsOn: [populateNodeModules, yarnInstall]) {
+    args = ['test']
+}
+
+test.dependsOn runKarma

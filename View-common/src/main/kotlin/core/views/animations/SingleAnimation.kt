@@ -12,7 +12,7 @@ open class SingleAnimation : Animation() {
     override fun start() {
         onStart?.invoke()
         val count = (duration / interval).toInt()
-        timer.repeat(count, interval) { iterCount ->
+        timer.repeat(count, interval) { iterCount: Int ->
             val progress = interval*iterCount / duration
             val interpolatedVal = interpolator(progress)
             onRepeat?.invoke(iterCount)

@@ -1,19 +1,22 @@
 package core.views.layouts
 
+import core.renderers.ViewRenderer
 import core.views.View
-import core.views.propertyDelegates.ViewChildrenProperty
+import di.inject
+import utils.observables.ObservableCollection
 
-open class Layout: View() {
+abstract class Layout: View() {
 
-    protected val childViews: MutableList<View> by ViewChildrenProperty(id)
+    private val renderer by inject<ViewRenderer>()
+
+    protected val childViews: MutableCollection<View> = ObservableCollection { renderer.invalidate(id) }
+
+    fun children() = childViews.toList()
 
     open fun addChild(child: View): Boolean {
         child.style.extendStyle(style)
         return childViews.add(child)
     }
 
-    fun children() = childViews.toList()
-    fun getChild(index: Int) = childViews[index]
     open fun removeChild(child: View) = childViews.remove(child)
-    open fun removeChild(index: Int) = childViews.removeAt(index)
 }

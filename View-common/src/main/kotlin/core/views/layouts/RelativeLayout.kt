@@ -35,9 +35,4 @@ class RelativeLayout: Layout() {
         }
         return false
     }
-
-    override fun removeChild(index: Int): View {
-        positions.removeAt(index)
-        return super.removeChild(index)
-    }
 }

@@ -7,11 +7,11 @@ import kotlin.reflect.KProperty
 
 class EventListener(
         private val event: Event,
-        private var listener: EventListener = {}
+        listener: EventListener = {}
 ): AbstractViewProperty<EventListener>(listener) {
 
     override operator fun setValue(thisRef: View, property: KProperty<*>, value: EventListener) {
         renderer.setEventListener(thisRef.id, event, value)
-        listener = value
+        this.value = value
     }
 }

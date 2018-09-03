@@ -5,18 +5,15 @@ import core.loaders.keys.HasKeys
 import core.loaders.keys.delegates.AbstractKey
 import kotlin.reflect.KProperty
 
-open class RequiredKey<T>(
-        private val getKeyValue: (String) -> T,
-        vararg conflictingKeys: String
-): AbstractKey<T>(*conflictingKeys) {
+open class RequiredKey<T>(private val getKeyValue: (String) -> T): AbstractKey<T>() {
 
     override fun getValue(thisRef: HasKeys, property: KProperty<*>): T {
-        val propName = property.name
-        val keyVal = thisRef.keys[propName]
+        val keyName = property.name
+        val keyVal = thisRef.keys[keyName]
         return when (keyVal) {
-            null -> throw IllegalViewTreeException(setOf(propName))
+            null -> throw IllegalViewTreeException(setOf(keyName))
             is String -> getKeyValue(keyVal)
-            else -> keyVal as T
+            else -> getAs(keyName, keyVal)
         }
     }
 }
