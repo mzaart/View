@@ -1,15 +1,15 @@
 package core.views.propertyDelegates
 
-import core.renderers.ViewRenderer
+import core.renderers.ViewTreeRenderer
 import core.views.events.Event
 import core.views.events.EventListener
 import kotlin.test.assertEquals
 
-class MockRenderer(
+class MockTreeRenderer(
         private val expectedId: Int,
         private val expectedEvent: Event? = null,
         private val expectedEventListener: EventListener? = null
-): ViewRenderer {
+): ViewTreeRenderer {
 
     override fun invalidate(viewId: Int) {
        assertEquals(expectedId, viewId)

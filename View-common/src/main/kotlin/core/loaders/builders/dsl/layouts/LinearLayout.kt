@@ -10,19 +10,16 @@ object linearLayout {
     operator fun invoke(init: LinearLayoutBuilder.() -> Unit): LinearLayout {
         return LinearLayoutBuilder().apply {
             init()
-            children.childViews.forEach { addChild(it, mapOf()) }
         }.build()
     }
 
-    val LinearLayoutBuilder.children
-        get() = LayoutChildren()
+    val LinearLayoutBuilder.children: LayoutChildren
+        get() = LayoutChildren(this)
 }
 
-class LayoutChildren {
-
-    var childViews: List<View> = listOf()
+class LayoutChildren(private val bldr: LinearLayoutBuilder) {
 
     operator fun get(vararg children: View) {
-        childViews = children.toList()
+        children.forEach { bldr.addChild(it, mapOf()) }
     }
 }

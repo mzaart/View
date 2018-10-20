@@ -23,7 +23,12 @@ abstract class SerializedViewTreeLoader: ViewTreeLoader {
 
     private fun visitNode(node: Node, parentBldr: LayoutBuilder<Layout>) {
         val content = node.content
-        val type = content["type"] ?: throw IllegalViewTreeException(setOf("type"))
+
+        val type = content["type"]
+                ?: throw IllegalViewTreeException(setOf("type"))
+        if (type !is String) {
+            throw IllegalViewTreeException("NullableRWKey 'type' should be a String")
+        }
         val builder by inject<ViewBuilder<*>>(type)
 
         if ((builder is LayoutBuilder<*>).xor(node is LayoutNode)) {

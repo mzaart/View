@@ -1,7 +1,7 @@
 package testUtils.kodein
 
-import core.renderers.PlaceholderRenderer
-import core.renderers.ViewRenderer
+import core.renderers.PlaceholderTreeRenderer
+import core.renderers.ViewTreeRenderer
 import di.KodeinContainer
 import di.KodeinContainer.kodein
 import org.kodein.di.Kodein
@@ -16,7 +16,7 @@ object TestKodein {
     private var productionKodein: Kodein by Delegates.notNull()
 
     private val testDIOverridesKodein = Kodein {
-        bind<ViewRenderer>() with singleton { PlaceholderRenderer() }
+        bind<ViewTreeRenderer>() with singleton { PlaceholderTreeRenderer() }
     }
 
     init {

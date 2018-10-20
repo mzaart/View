@@ -9,10 +9,9 @@ object scrollLayout {
     operator fun invoke(init: ScrollLayoutBuilder.() -> Unit): LinearLayout {
         return ScrollLayoutBuilder().apply {
             init()
-            children.childViews.forEach { addChild(it, mapOf()) }
         }.build()
     }
 
     val ScrollLayoutBuilder.children
-        get() = LayoutChildren()
+        get() = LayoutChildren(this)
 }

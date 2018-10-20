@@ -2,54 +2,60 @@ package core.loaders.builders
 
 import core.loaders.Ids
 import core.loaders.viewTree.IllegalViewTreeException
-import core.loaders.keys.ViewKeys
-import core.loaders.keys.delegates.nullable.*
+import core.views.Dimension
+import utils.mapBased.keys.delegates.nullable.*
 import core.views.View
 import di.inject
 import utils.extensions.nonNull
+import utils.extensions.representations
 import utils.extensions.toID
+import utils.mapBased.keys.HasKeys
+import utils.mapBased.keys.delegates.readOnly.casts.CastingKey
 
 abstract class ViewBuilder<V: View>: ViewKeys() {
 
     protected val ids by inject<Ids>()
 
-    var id by StringKey
+    var id by StringRWKey
 
-    var width by DoubleKey
-    var height by DoubleKey
+    var width by StringRWKey
+    var height by StringRWKey
 
-    var visibility by EnumKey(View.Visibility.values())
-    var disabled by BoolKey
-    var isCard by BoolKey
+    var visibility by EnumRWKey(View.Visibility.values())
+    var disabled by BoolRWKey
 
-    var marginTop by DoubleKey
-    var marginBottom by DoubleKey
-    var marginStart by DoubleKey
-    var marginEnd by DoubleKey
-    var marginHorizontal by DoubleKey
-    var marginVertical by DoubleKey
+    var marginTop by DoubleRWKey
+    var marginBottom by DoubleRWKey
+    var marginStart by DoubleRWKey
+    var marginEnd by DoubleRWKey
+    var marginHorizontal by DoubleRWKey
+    var marginVertical by DoubleRWKey
 
-    var paddingTop by DoubleKey
-    var paddingBottom by DoubleKey
-    var paddingStart by DoubleKey
-    var paddingEnd by DoubleKey
-    var paddingHorizontal by DoubleKey
-    var paddingVertical by DoubleKey
+    var paddingTop by DoubleRWKey
+    var paddingBottom by DoubleRWKey
+    var paddingStart by DoubleRWKey
+    var paddingEnd by DoubleRWKey
+    var paddingHorizontal by DoubleRWKey
+    var paddingVertical by DoubleRWKey
+
+    var webExtras by CastingKey<Map<String, Any>>()
+    var androidExtras by CastingKey<Map<String, Any>>()
+    var iosExtras by CastingKey<Map<String, Any>>()
 
     // style attrs
-    var backgroundColor by ColorKey
-    var hasShadow by BoolKey
+    var backgroundColor by ColorRWKey
+    var hasShadow by BoolRWKey
 
     open val conflictingKeys = setOf(
             setOf("marginVertical", "marginTop", "marginBottom"),
             setOf("marginHorizontal", "marginStart","marginEnd"),
             setOf("paddingVertical", "paddingTop", "paddingBottom"),
-            setOf("paddingHorizontal", "paddingStart","paddingEnd")
+            setOf("paddingHorizontal", "paddingStart", "paddingEnd")
     )
     
     protected abstract val view: V
 
-    fun applyKeys(keys: Map<String, String>): ViewBuilder<V> {
+    fun applyKeys(keys: Map<String, Any>): ViewBuilder<V> {
         this.keys = keys.toMutableMap()
         return this
     }
@@ -67,7 +73,7 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
             for (grp in conflictGrps) {
                 val conflictingKey = grp.firstOrNull { it != key && it in keys.keys }
                 if (conflictingKey != null) {
-                    throw IllegalViewTreeException("Key $key conflicts with key $conflictingKey")
+                    throw IllegalViewTreeException("NullableRWKey $key conflicts with key $conflictingKey")
                 }
             }
         }
@@ -81,9 +87,24 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
             view.id = if (!ids.containsId(id)) id else throw IllegalViewTreeException("ID already exists")
         }
 
+        width.nonNull {
+            view.width = if (it in Dimension.Type.WRAP_CONTENT.representations()) {
+                Dimension.value(Dimension.Type.WRAP_CONTENT)
+            } else {
+                it.toDouble()
+            }
+        }
+
+        height.nonNull {
+            view.height = if (it in Dimension.Type.WRAP_CONTENT.representations()) {
+                Dimension.value(Dimension.Type.WRAP_CONTENT)
+            } else {
+                it.toDouble()
+            }
+        }
+
         visibility.nonNull { view.visibility = it }
         disabled.nonNull { view.disabled = it }
-        isCard.nonNull { view.isCard = it }
 
         val vMargin = marginVertical
         if (vMargin != null) {
@@ -121,8 +142,10 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
             paddingEnd.nonNull { view.paddingEnd = it }
         }
 
-        backgroundColor.nonNull { view.style.backgroundColor = it }
-        hasShadow.nonNull { view.style.hasShadow = it }
+        backgroundColor.nonNull { view.backgroundColor = it }
+
+        webExtras.nonNull { view.webExtras = HasKeys(it) }
+        androidExtras.nonNull { view.androidExtras = HasKeys(it) }
     }
 
     protected open fun beforeProduction() {}

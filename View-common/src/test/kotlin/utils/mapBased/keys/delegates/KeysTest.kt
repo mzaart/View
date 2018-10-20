@@ -1,4 +1,4 @@
-package core.loaders.keys.delegates
+package utils.mapBased.keys.delegates
 
 import core.loaders.viewTree.IllegalViewTreeException
 import kotlin.test.Test

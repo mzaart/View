@@ -1,9 +1,9 @@
 package core.loaders.builders.input.textInput
 
 import core.loaders.builders.ViewBuilder
-import core.loaders.keys.delegates.nullable.ColorKey
-import core.loaders.keys.delegates.nullable.IntKey
-import core.loaders.keys.delegates.nullable.StringKey
+import utils.mapBased.keys.delegates.nullable.ColorRWKey
+import utils.mapBased.keys.delegates.nullable.IntRWKey
+import utils.mapBased.keys.delegates.nullable.StringRWKey
 import core.views.input.textInput.EditText
 import utils.extensions.nonNull
 
@@ -11,16 +11,16 @@ class EditTextBuilder: ViewBuilder<EditText>() {
 
     override val view = EditText()
 
-    var text by StringKey
+    var text by StringRWKey
 
     // style keys
-    var fontSize by IntKey
-    var fontColor by ColorKey
+    var fontSize by IntRWKey
+    var fontColor by ColorRWKey
 
     override fun beforeProduction() {
         text.nonNull { view.text = it }
 
-        fontSize.nonNull { view.style.fontSize = it }
-        fontColor.nonNull { view.style.fontColor = it }
+        fontSize.nonNull { view.fontSize = it }
+        fontColor.nonNull { view.fontColor = it }
     }
 }

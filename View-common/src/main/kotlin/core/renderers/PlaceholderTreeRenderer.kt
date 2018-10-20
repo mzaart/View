@@ -3,7 +3,7 @@ package core.renderers
 import core.views.events.Event
 import core.views.events.EventListener
 
-class PlaceholderRenderer: ViewRenderer {
+class PlaceholderTreeRenderer: ViewTreeRenderer {
 
     override fun invalidate(viewId: Int) {}
 

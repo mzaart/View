@@ -1,9 +1,9 @@
 package core.loaders.builders.layouts
 
 import core.loaders.viewTree.IllegalViewTreeException
-import core.loaders.keys.ViewKeys
-import core.loaders.keys.delegates.nullable.BoolKey
-import core.loaders.keys.delegates.nullable.StringKey
+import core.loaders.builders.ViewKeys
+import utils.mapBased.keys.delegates.nullable.BoolRWKey
+import utils.mapBased.keys.delegates.nullable.StringRWKey
 import core.views.layouts.RelativeLayout
 import utils.extensions.nonNull
 import utils.extensions.toID
@@ -13,18 +13,18 @@ typealias RP = RelativeLayout.Positioning
 class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
 
      class Child: ViewKeys() {
-        var alignParentTop by BoolKey
-        var alignParentBottom by BoolKey
-        var alignParentStart by BoolKey
-        var alignParentEnd by BoolKey
-        var center by BoolKey
-        var centerHorizontal by BoolKey
-        var centerVertical by BoolKey
+        var alignParentTop by BoolRWKey
+        var alignParentBottom by BoolRWKey
+        var alignParentStart by BoolRWKey
+        var alignParentEnd by BoolRWKey
+        var center by BoolRWKey
+        var centerHorizontal by BoolRWKey
+        var centerVertical by BoolRWKey
 
-        var topOf by StringKey
-        var bottomOf by StringKey
-        var startOf by StringKey
-        var endOf by StringKey
+        var topOf by StringRWKey
+        var bottomOf by StringRWKey
+        var startOf by StringRWKey
+        var endOf by StringRWKey
     }
 
     override val view = RelativeLayout()

@@ -1,6 +1,6 @@
 package core.views.propertyDelegates
 
-import core.renderers.ViewRenderer
+import core.renderers.ViewTreeRenderer
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.singleton
@@ -28,7 +28,7 @@ class NullableViewPropertyTest {
     @Test
     fun testViewRendererUpdated() {
         TestKodein.addConfig(Kodein {
-            bind<ViewRenderer>() with singleton { MockRenderer(ViewStub.ID) }
+            bind<ViewTreeRenderer>() with singleton { MockTreeRenderer(ViewStub.ID) }
         })
         ViewStub().nullableViewProp = 2
     }

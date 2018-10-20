@@ -1,3 +1,20 @@
+
+buildscript {
+    ext.kotlin_version = '1.2.61'
+
+    repositories {
+        jcenter()
+        maven {
+            url "https://dl.bintray.com/kotlin/kotlin-eap"
+        }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.60"
+        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.37"
+    }
+}
+
 plugins {
     id 'kotlin-platform-js' version '1.2.60'
     id "com.moowork.node" version "1.2.0"
@@ -9,12 +26,22 @@ repositories {
 }
 
 apply plugin: 'kotlin2js'
+apply plugin: 'org.jetbrains.kotlin.frontend'
 
 compileKotlin2Js {
-    kotlinOptions{
-        moduleKind = 'umd'
+    kotlinOptions {
         metaInfo = true
         sourceMap = true
+        moduleKind = "umd"
+    }
+}
+
+kotlinFrontend {
+    downloadNodeJsVersion = 'latest'
+
+    webpackBundle {
+        bundleName = "view-js"
+        mode = 'production'
     }
 }
 
@@ -28,35 +55,14 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js"
     expectedBy project(":View-common")
     testCompile "org.jetbrains.kotlin:kotlin-test-js"
-    implementation 'org.kodein.di:kodein-di-erased-js:5.2.0'
+    compile 'org.kodein.di:kodein-di-erased-js:5.2.0'
     compile 'org.kodein.di:kodein-di-conf-js:5.2.0'
 }
 
-task populateNodeModules(type: Copy, dependsOn: compileTestKotlin2Js) {
+task bundleJar(type: Jar) {
+    archiveName = "View-js.jar"
+    destinationDir = file("${buildDir}/libs")
+    from "${buildDir}/classes/kotlin/main"
+    from "${buildDir}/bundle"
 
-    from compileKotlin2Js.destinationDir
-
-    configurations.testCompile.each {
-        from zipTree(it.absolutePath).matching { include '*.js' }
-    }
-
-    configurations.compile.each {
-        from zipTree(it.absolutePath).matching { include '*.js' }
-    }
-
-    into "${buildDir}/node_modules"
 }
-
-node {
-    download = true
-}
-
-task yarnInstall(type: YarnTask) {
-    args = ['install']
-}
-
-task runKarma(type: YarnTask, dependsOn: [populateNodeModules, yarnInstall]) {
-    args = ['test']
-}
-
-test.dependsOn runKarma

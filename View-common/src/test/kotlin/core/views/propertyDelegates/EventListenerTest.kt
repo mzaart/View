@@ -1,6 +1,6 @@
 package core.views.propertyDelegates
 
-import core.renderers.ViewRenderer
+import core.renderers.ViewTreeRenderer
 import core.views.events.EventListener
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
@@ -29,7 +29,7 @@ class EventListenerTest {
     @Test
     fun testViewRendererUpdated() {
         TestKodein.addConfig(Kodein {
-            bind<ViewRenderer>() with singleton { MockRenderer(
+            bind<ViewTreeRenderer>() with singleton { MockTreeRenderer(
                     ViewStub.ID,
                     ViewStub.TestEvents.EVENT_A,
                     listener
