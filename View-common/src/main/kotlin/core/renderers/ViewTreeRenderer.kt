@@ -1,10 +1,10 @@
 package core.renderers
 
-import core.views.events.Event
-import core.views.events.EventListener
+import core.views.View
+import core.views.layouts.Layout
 
 interface ViewTreeRenderer {
 
-    fun invalidate(viewId: Int)
-    fun setEventListener(viewId: Int, event: Event, listener: EventListener)
+    fun setRoot(layout: Layout)
+    fun invalidate(view: View)
 }

@@ -1,11 +1,10 @@
 package core.renderers
 
-import core.views.events.Event
-import core.views.events.EventListener
+import core.views.View
+import core.views.layouts.Layout
 
 class PlaceholderTreeRenderer: ViewTreeRenderer {
 
-    override fun invalidate(viewId: Int) {}
-
-    override fun setEventListener(viewId: Int, event: Event, listener: EventListener) {}
+    override fun setRoot(layout: Layout) {}
+    override fun invalidate(view: View) {}
 }

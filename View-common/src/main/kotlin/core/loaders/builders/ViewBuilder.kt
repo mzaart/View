@@ -86,6 +86,7 @@ abstract class ViewBuilder<V: View>: ViewKeys() {
         } else {
             view.id = if (!ids.containsId(id)) id else throw IllegalViewTreeException("ID already exists")
         }
+        ids.addId(view.id);
 
         width.nonNull {
             view.width = if (it in Dimension.Type.WRAP_CONTENT.representations()) {

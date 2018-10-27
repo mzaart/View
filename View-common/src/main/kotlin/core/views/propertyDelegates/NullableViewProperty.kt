@@ -16,6 +16,6 @@ open class NullableViewProperty<T: Any>(
             validator?.validate(value)
         }
         this.value = value
-        renderer.invalidate(thisRef.id)
+        renderer.invalidate(thisRef)
     }
 }

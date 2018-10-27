@@ -13,6 +13,6 @@ class ViewProperty<T: Any>(
     override operator fun setValue(thisRef: View, property: KProperty<*>, value: T) {
         validator?.validate(value)
         this.value = value
-        renderer.invalidate(thisRef.id)
+        renderer.invalidate(thisRef)
     }
 }
