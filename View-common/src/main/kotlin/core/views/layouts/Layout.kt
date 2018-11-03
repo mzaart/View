@@ -36,7 +36,7 @@ abstract class Layout: View() {
             child.parent = this
             renderer.invalidate(this)
         }
-        return childViews.add(child)
+        return added
     }
 
     open fun removeChild(child: View): Boolean {

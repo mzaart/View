@@ -13,26 +13,26 @@ typealias RP = RelativeLayout.Positioning
 class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
 
      class Child: ViewKeys() {
-        var alignParentTop by BoolRWKey
-        var alignParentBottom by BoolRWKey
-        var alignParentStart by BoolRWKey
-        var alignParentEnd by BoolRWKey
-        var center by BoolRWKey
-        var centerHorizontal by BoolRWKey
-        var centerVertical by BoolRWKey
+         var alignParentTop by BoolRWKey
+         var alignParentBottom by BoolRWKey
+         var alignParentStart by BoolRWKey
+         var alignParentEnd by BoolRWKey
+         var center by BoolRWKey
+         var centerHorizontal by BoolRWKey
+         var centerVertical by BoolRWKey
 
-        var topOf by StringRWKey
-        var bottomOf by StringRWKey
-        var startOf by StringRWKey
-        var endOf by StringRWKey
+         var topOf by StringRWKey
+         var bottomOf by StringRWKey
+         var startOf by StringRWKey
+         var endOf by StringRWKey
+
+         var alignTop by StringRWKey
+         var alignBottom by StringRWKey
+         var alignStart by StringRWKey
+         var alignEnd by StringRWKey
     }
 
     override val view = RelativeLayout()
-
-    override val conflictingKeys = setOf(
-            setOf("alignParentTop", "alignParentBottom", "topOf", "bottomOf", "centerVertical", "center"),
-            setOf("alignParentStart", "alignParentEnd", "startOf", "endOf", "centerHorizontal", "center")
-    )
 
     override fun beforeProduction() {
         children.forEach { pair ->
@@ -54,13 +54,17 @@ class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
                 bottomOf.nonNull { pos += RP.BOTTOM_OF to assignId(it.toID()) }
                 startOf.nonNull { pos += RP.START_OF to assignId(it.toID()) }
                 endOf.nonNull { pos += RP.END_OF to assignId(it.toID()) }
+
+                alignTop.nonNull { pos += RP.ALIGN_TOP to assignId(it.toID()) }
+                alignBottom.nonNull { pos += RP.ALIGN_BOTTOM to assignId(it.toID()) }
+                alignStart.nonNull { pos += RP.ALIGN_START to assignId(it.toID()) }
+                alignEnd.nonNull { pos += RP.ALIGN_END to assignId(it.toID()) }
             }
 
             view.addChild(pair.first, pos)
         }
-
     }
 
     private fun assignId(id: Int) = if (view.children().any { id == it.id }) id
-            else throw IllegalViewTreeException("Positioning DslView relative to a non-existent DslView")
+            else throw IllegalViewTreeException("Positioning View relative to a non-existent View")
 }
