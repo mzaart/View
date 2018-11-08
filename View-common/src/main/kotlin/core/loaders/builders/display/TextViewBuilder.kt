@@ -1,13 +1,13 @@
 package core.loaders.builders.display
 
-import core.loaders.builders.ViewBuilder
+import core.loaders.builders.AbstractViewBuilder
 import utils.mapBased.keys.delegates.nullable.ColorRWKey
 import utils.mapBased.keys.delegates.nullable.IntRWKey
 import utils.mapBased.keys.delegates.nullable.StringRWKey
 import core.views.display.TextView
 import utils.extensions.nonNull
 
-class TextViewBuilder: ViewBuilder<TextView>() {
+class TextViewBuilder: AbstractViewBuilder<TextView>() {
 
     var text by StringRWKey
 

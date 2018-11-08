@@ -1,13 +1,13 @@
 package core.loaders.builders.input.textInput
 
-import core.loaders.builders.ViewBuilder
+import core.loaders.builders.AbstractViewBuilder
 import utils.mapBased.keys.delegates.nullable.ColorRWKey
 import utils.mapBased.keys.delegates.nullable.IntRWKey
 import utils.mapBased.keys.delegates.nullable.StringRWKey
 import core.views.input.textInput.EditText
 import utils.extensions.nonNull
 
-class EditTextBuilder: ViewBuilder<EditText>() {
+class EditTextBuilder: AbstractViewBuilder<EditText>() {
 
     override val view = EditText()
 

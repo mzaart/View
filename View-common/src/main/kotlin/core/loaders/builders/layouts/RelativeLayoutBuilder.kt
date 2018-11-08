@@ -34,7 +34,7 @@ class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
 
     override val view = RelativeLayout()
 
-    override fun beforeProduction() {
+    override fun addChildrenToViews() {
         children.forEach { pair ->
             val pos: MutableList<Pair<RP, Int>> = mutableListOf()
             val keys = Child()

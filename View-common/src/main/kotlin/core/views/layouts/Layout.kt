@@ -2,11 +2,15 @@ package core.views.layouts
 
 import core.renderers.ViewTreeRenderer
 import core.views.View
+import core.views.propertyDelegates.ViewProperty
 import di.inject
 import utils.extensions.toID
 import utils.observables.ObservableCollection
 
 abstract class Layout: View() {
+
+    var scrollX: Boolean by ViewProperty(false)
+    var scrollY: Boolean by ViewProperty(false)
 
     private val renderer by inject<ViewTreeRenderer>()
 

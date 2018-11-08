@@ -1,14 +1,13 @@
 package core.loaders.builders
 
 import core.loaders.viewTree.IllegalViewTreeException
-import core.views.View
 import core.views.display.TextView
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 class ViewBuilderKeyConflictTest {
 
-    class ViewBuilderStub: ViewBuilder<TextView>() {
+    class ViewBuilderStub: AbstractViewBuilder<TextView>() {
 
         override val view = TextView()
     }

@@ -1,12 +1,12 @@
 package core.loaders.builders.input
 
-import core.loaders.builders.ViewBuilder
+import core.loaders.builders.AbstractViewBuilder
 import utils.mapBased.keys.delegates.nullable.StringRWKey
 import core.views.input.Button
 import utils.extensions.nonNull
 import utils.mapBased.keys.delegates.nullable.EnumRWKey
 
-class ButtonBuilder: ViewBuilder<Button>() {
+class ButtonBuilder: AbstractViewBuilder<Button>() {
 
     override val view = Button()
 

@@ -12,7 +12,6 @@ import core.loaders.builders.input.textInput.EditTextBuilder
 import core.loaders.builders.layouts.GridLayoutBuilder
 import core.loaders.builders.layouts.LinearLayoutBuilder
 import core.loaders.builders.layouts.RelativeLayoutBuilder
-import core.loaders.builders.layouts.ScrollLayoutBuilder
 import core.renderers.PlaceholderTreeRenderer
 import core.renderers.ViewTreeRenderer
 import org.kodein.di.Kodein
@@ -34,7 +33,6 @@ object KodeinContainer {
             // view builders
             bind<ViewBuilder<*>>("LinearLayout") with provider { LinearLayoutBuilder() }
             bind<ViewBuilder<*>>("RelativeLayout") with provider { RelativeLayoutBuilder() }
-            bind<ViewBuilder<*>>("ScrollLayout") with provider { ScrollLayoutBuilder() }
             bind<ViewBuilder<*>>("GridLayout") with provider { GridLayoutBuilder() }
 
             bind<ViewBuilder<*>>("TextView") with provider { TextViewBuilder() }
