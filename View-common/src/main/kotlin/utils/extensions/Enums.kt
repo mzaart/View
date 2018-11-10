@@ -6,3 +6,7 @@ import utils.namingConventions.CaseFormatConverter.Format
 fun <E: Enum<E>> E.representations() = Format.values().map {
     CaseFormatConverter.convert(Format.UPPER_UNDERSCORE, it, this.toString())
 }
+
+fun <E: Enum<E>> String.toEnum(values: Array<E>): E = values.first { enumVal ->
+    this in enumVal.representations()
+}
