@@ -2,8 +2,16 @@ package utils.namingConventions
 
 import utils.validators.conditions.StringConditions
 
+/**
+ * Converts strings between different case formats.
+ *
+ * @see CaseFormatConverter.Format For available formats
+ */
 class CaseFormatConverter {
 
+    /**
+     * Represents a string format
+     */
     enum class Format {
         UPPER_UNDERSCORE,
         LOWER_UNDERSCORE,
@@ -44,6 +52,15 @@ class CaseFormatConverter {
                 }
         )
 
+        /**
+         * Converts a string form one case format to another.
+         *
+         * @param from The original case format
+         * @param to The target case format
+         * @str The string to be converted
+         *
+         * @throws IllegalArgumentException If the passed string is not in the format passed in [from].
+         */
         fun convert(from: Format, to: Format, str: String): String {
             isFormatValid(str, from)
             return middleToFormat[to]!!(formatToMiddle[from]!!(str))

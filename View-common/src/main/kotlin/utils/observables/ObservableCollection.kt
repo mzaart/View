@@ -1,9 +1,13 @@
 package utils.observables
 
+/**
+ * A collection that notifies its subscribes whenever its contents are changed.
+ */
 class ObservableCollection<E>(
         private val list: MutableList<E> = ArrayList(),
         private val onChangeListener: (ObservableCollection<E>) -> Unit
 ): MutableCollection<E> by list {
+
 
     override fun add(element: E) = boolReturningOp { list.add(element) }
 

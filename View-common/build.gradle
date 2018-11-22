@@ -1,7 +1,47 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
 
+    dependencies {
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+    }
+}
 
 plugins {
-    id 'kotlin-platform-common' version '1.2.60'
+    id 'kotlin-platform-common' version '1.2.71'
+    id 'org.jetbrains.dokka' version '0.9.17'
+}
+
+dokka {
+    outputFormat = 'markdown'
+    includes = [
+            'src/main/kotlin/core/dok.md',
+
+            // includes in package core.views
+            'src/main/kotlin/core/views/dok.md',
+            'src/main/kotlin/core/views/layouts/dok.md',
+            'src/main/kotlin/core/views/input/dok.md',
+            'src/main/kotlin/core/views/propertyDelegates/dok.md',
+
+            'src/main/kotlin/core/loaders/dok.md',
+
+            'src/main/kotlin/di/dok.md',
+
+            // includes in package utils
+            'src/main/kotlin/utils/mapBased/keys/dok.md'
+    ]
+    impliedPlatforms = ["Common"] // This will force platform tags for all non-common sources e.g. "JVM"
+    kotlinTasks {
+        // dokka fails to retrieve sources from MPP-tasks so they must be set empty to avoid exception
+        // use sourceRoot instead (see below)
+        []
+    }
+    sourceRoot {
+        // assuming there is only a single source dir...
+        path = sourceSets.getByName("main").kotlin.srcDirs[0]
+        platforms = ["Common"]
+    }
 }
 
 repositories {

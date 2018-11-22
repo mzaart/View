@@ -1,15 +1,24 @@
-package core.loaders.viewTree
+package core.loaders.viewTree.treeLoaders
 
 import core.loaders.builders.ViewBuilder
 import core.loaders.builders.layouts.LayoutBuilder
 import core.loaders.builders.layouts.LinearLayoutBuilder
+import core.loaders.viewTree.IllegalViewTreeException
 import core.loaders.viewTree.nodes.LayoutNode
 import core.loaders.viewTree.nodes.Node
 import core.views.layouts.Layout
 import di.inject
 
+/**
+ * Base class for tree loaders that load view trees from serialized formats.
+ */
 abstract class SerializedViewTreeLoader: ViewTreeLoader {
 
+    /**
+     * Loads the view tree
+     *
+     * @return The root of the loaded view tree
+     */
     override fun loadViewTree(): Layout {
         val bldr = LinearLayoutBuilder().applyKeys(mapOf(
                 "id" to "ViewTreeRoot",
@@ -19,7 +28,7 @@ abstract class SerializedViewTreeLoader: ViewTreeLoader {
         return bldr.build()
     }
 
-    abstract fun getRootNode(): Node
+    protected abstract fun getRootNode(): Node
 
     private fun visitNode(node: Node, parentBldr: LayoutBuilder<Layout>) {
         val content = node.content

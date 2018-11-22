@@ -5,6 +5,9 @@ import utils.mapBased.keys.MapInterface
 import utils.mapBased.keys.delegates.AbstractRWKey
 import kotlin.reflect.KProperty
 
+/**
+ * Has the same behaviour as delegation by a map.
+ */
 class CastingKey<T>: AbstractRWKey<T?>() {
 
     override val getterStrategy = listOf(MapInterface.Strategy.CAST)

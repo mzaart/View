@@ -1,6 +1,20 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+    }
+}
+
+
 plugins {
     id 'kotlin-platform-jvm' version '1.2.60'
 }
+
+apply plugin: 'org.jetbrains.dokka'
+
 repositories {
     jcenter()
     mavenCentral()
@@ -17,6 +31,13 @@ dependencies {
     compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.6.1"
     implementation 'org.kodein.di:kodein-di-erased-jvm:5.2.0'
     compile 'org.kodein.di:kodein-di-conf-jvm:5.2.0'
+}
+
+dokka {
+    sourceRoot {
+        path = sourceSets.main.kotlin.srcDirs[0]
+        platforms = ["JVM"]
+    }
 }
 
 compileKotlin {

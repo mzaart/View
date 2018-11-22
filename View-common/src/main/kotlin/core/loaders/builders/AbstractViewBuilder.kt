@@ -12,6 +12,13 @@ import utils.extensions.toID
 import utils.mapBased.keys.HasKeys
 import utils.mapBased.keys.delegates.readOnly.casts.CastingKey
 
+/**
+ * Base class for all view builders.
+ *
+ * This class is responsible for building the common properties of view. In other words, the base builder
+ * will set all the properties in the [View] class. It is the responsibility of view specific builders to
+ * set the properties of specific views.
+ */
 abstract class AbstractViewBuilder<V: View>: ViewBuilder<V>, ViewKeys() {
 
     protected val ids by inject<Ids>()
@@ -46,13 +53,21 @@ abstract class AbstractViewBuilder<V: View>: ViewBuilder<V>, ViewKeys() {
     var backgroundColor by ColorRWKey
     var hasShadow by BoolRWKey
 
+    /**
+     *  Contains sets of conflicting keys.
+     *
+     *  If more than one key belonging to the same set are present, an [IllegalViewTreeException] will be thrown.
+     */
     open val conflictingKeys = setOf(
             setOf("marginVertical", "marginTop", "marginBottom"),
             setOf("marginHorizontal", "marginStart","marginEnd"),
             setOf("paddingVertical", "paddingTop", "paddingBottom"),
             setOf("paddingHorizontal", "paddingStart", "paddingEnd")
     )
-    
+
+    /**
+     * The view instance that will have its properties set.
+     */
     protected abstract val view: V
 
     override fun applyKeys(keys: Map<String, Any>): ViewBuilder<V> {
@@ -60,6 +75,16 @@ abstract class AbstractViewBuilder<V: View>: ViewBuilder<V>, ViewKeys() {
         return this
     }
 
+    /**
+     * Builds the view from the keys.
+     *
+     * The process for building the view goes as follows:
+     *      1. The keys are checked for conflicts
+     *      2. Common view properties are set
+     *      3. The function [beforeProduction] is called. Which can be overridden by subclasses to set
+     *      view-specific properties.
+     *      4. The resultant view is returned
+     */
     override fun build(): V {
         checkConflicts()
         applyViewAttrs()

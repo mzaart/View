@@ -12,23 +12,25 @@ import core.loaders.builders.input.textInput.EditTextBuilder
 import core.loaders.builders.layouts.GridLayoutBuilder
 import core.loaders.builders.layouts.LinearLayoutBuilder
 import core.loaders.builders.layouts.RelativeLayoutBuilder
-import core.renderers.PlaceholderTreeRenderer
-import core.renderers.ViewTreeRenderer
 import org.kodein.di.Kodein
 import org.kodein.di.conf.ConfigurableKodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.provider
 import org.kodein.di.erased.singleton
 
+/**
+ * Contains the bindings for DI.
+ */
 object KodeinContainer {
 
+    /**
+     * The kodein instance used by the library.
+     */
     val kodein = ConfigurableKodein()
 
     init {
         kodein.addConfig {
             bind<Ids>() with singleton { Ids() }
-
-            bind<ViewTreeRenderer>() with singleton { PlaceholderTreeRenderer() }
 
             // view builders
             bind<ViewBuilder<*>>("LinearLayout") with provider { LinearLayoutBuilder() }
@@ -47,6 +49,16 @@ object KodeinContainer {
         }
     }
 
+    /**
+     * Adds extra bindings to the container.
+     *
+     * Note that this should be done before the first injection, failing to do so will result in an exception
+     * being thrown.
+     *
+     * @param kodein The kodein instance containing the bindings
+     * @param allowOverrides If true, any conflicts in binding will result in the old bindings
+     * being overridden by the new bindings.
+     */
     fun addConfig(kodein: Kodein, allowOverrides: Boolean = true) {
         this.kodein.addExtend(kodein, allowOverrides)
     }

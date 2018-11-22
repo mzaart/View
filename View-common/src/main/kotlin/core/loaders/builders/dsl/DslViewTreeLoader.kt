@@ -1,6 +1,6 @@
 package core.loaders.builders.dsl
 
-import core.loaders.viewTree.ViewTreeLoader
+import core.loaders.viewTree.treeLoaders.ViewTreeLoader
 import core.views.layouts.Layout
 
 @Suppress("ClassName")

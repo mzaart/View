@@ -1,5 +1,6 @@
 package core.views.input.binaryStateInput
 
-import core.views.propertyDelegates.NullableViewProperty
-
+/**
+ * Represents a Radio Button.
+ */
 class RadioButton : BinaryStateInput()

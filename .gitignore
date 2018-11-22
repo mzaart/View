@@ -69,6 +69,8 @@ node_modules
 gradle/wrapper
 
 MaterialDesignJsVeiwRenderer/
+.scripts/
+
 
 .idea/
 gradle.properties
