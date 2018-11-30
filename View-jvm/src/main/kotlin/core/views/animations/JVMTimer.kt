@@ -1,2 +1,0 @@
-package core.views.animations
-

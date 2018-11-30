@@ -1,9 +1,9 @@
 package testUtils.kodein
 
-import core.renderers.PlaceholderTreeRenderer
-import core.renderers.ViewTreeRenderer
-import di.KodeinContainer
-import di.KodeinContainer.kodein
+import view.core.renderers.PlaceholderTreeRenderer
+import view.core.renderers.ViewTreeRenderer
+import view.di.KodeinContainer
+import view.di.KodeinContainer.kodein
 import org.kodein.di.Kodein
 import org.kodein.di.conf.ConfigurableKodein
 import org.kodein.di.erased.bind

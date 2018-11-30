@@ -5,44 +5,36 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
     }
 }
 
 plugins {
     id 'kotlin-platform-common' version '1.2.71'
     id 'org.jetbrains.dokka' version '0.9.17'
+    id "maven-publish"
+    id "com.jfrog.bintray"
 }
 
-dokka {
-    outputFormat = 'markdown'
-    includes = [
-            'src/main/kotlin/core/dok.md',
+apply from: rootProject.file('pom.gradle')
+apply from: project.file('bintray.gradle')
 
-            // includes in package core.views
-            'src/main/kotlin/core/views/dok.md',
-            'src/main/kotlin/core/views/layouts/dok.md',
-            'src/main/kotlin/core/views/input/dok.md',
-            'src/main/kotlin/core/views/propertyDelegates/dok.md',
+publishing {
+    publications {
+        mavenProject(MavenPublication) {
+            from components.java
 
-            'src/main/kotlin/core/loaders/dok.md',
+            groupId project.group
+            artifactId project.name
+            version '0.1.0'
 
-            'src/main/kotlin/di/dok.md',
+            artifact sourcesJar
 
-            // includes in package utils
-            'src/main/kotlin/utils/mapBased/keys/dok.md'
-    ]
-    impliedPlatforms = ["Common"] // This will force platform tags for all non-common sources e.g. "JVM"
-    kotlinTasks {
-        // dokka fails to retrieve sources from MPP-tasks so they must be set empty to avoid exception
-        // use sourceRoot instead (see below)
-        []
-    }
-    sourceRoot {
-        // assuming there is only a single source dir...
-        path = sourceSets.getByName("main").kotlin.srcDirs[0]
-        platforms = ["Common"]
+            withPom(pom)
+        }
     }
 }
+
 
 repositories {
     jcenter()
@@ -58,4 +50,51 @@ dependencies {
     implementation 'org.kodein.di:kodein-di-erased-common:5.2.0'
     compile 'org.kodein.di:kodein-di-conf-common:5.2.0'
     compile 'org.kodein.di:kodein-di-core-common:5.2.0'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+dokka {
+    outputFormat = 'markdown'
+    includes = [
+            'src/main/kotlin/view/core/dok.md',
+
+            // includes in package view.core.views
+            'src/main/kotlin/view/core/views/dok.md',
+            'src/main/kotlin/view/core/views/layouts/dok.md',
+            'src/main/kotlin/view/core/views/input/dok.md',
+            'src/main/kotlin/view/core/views/propertyDelegates/dok.md',
+
+            'src/main/kotlin/view/core/loaders/dok.md',
+
+            'src/main/kotlin/view/di/dok.md',
+
+            // includes in package view.utils
+            'src/main/kotlin/view/utils/mapBased/keys/dok.md'
+    ]
+    impliedPlatforms = ["Common"] // This will force platform tags for all non-common sources e.g. "JVM"
+    kotlinTasks {
+        // dokka fails to retrieve sources from MPP-tasks so they must be set empty to avoid exception
+        // use sourceRoot instead (see below)
+        []
+    }
+    sourceRoot {
+        // assuming there is only a single source dir...
+        path = sourceSets.getByName("main").kotlin.srcDirs[0]
+        platforms = ["Common"]
+    }
 }

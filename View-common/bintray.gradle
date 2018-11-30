@@ -1,0 +1,26 @@
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_API_KEY')
+    publish = true
+    override = true
+    pkg {
+        //the name of your bintray's maven repo
+        repo = 'View'
+        //the name of your bintray's repo
+        name = 'View-Common'
+        licenses = ['Apache-2.0']
+        publications = ['mavenProject']
+        version {
+            name = '0.1.0'
+            released = new Date()
+            vcsTag = project.version
+        }
+    }
+}
+bintrayUpload.doFirst {
+    publications = project.publishing.publications.findAll { !it.name.contains('-test') }.collect {
+        println("Uploading artifact '$it.groupId:$it.artifactId:$it.version' from publication '$it.name'")
+        it.name // << WORKAROUND IS HERE
+    }
+}

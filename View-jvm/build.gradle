@@ -5,12 +5,15 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
     }
 }
 
 
 plugins {
     id 'kotlin-platform-jvm' version '1.2.60'
+    id "maven-publish"
+    id "com.jfrog.bintray"
 }
 
 apply plugin: 'org.jetbrains.dokka'
@@ -19,6 +22,41 @@ repositories {
     jcenter()
     mavenCentral()
     maven { url "https://kotlin.bintray.com/kotlinx" }
+}
+
+apply from: rootProject.file('pom.gradle')
+apply from: project.file('bintray.gradle')
+
+publishing {
+    publications {
+        mavenProject(MavenPublication) {
+            from components.java
+
+            groupId project.group
+            artifactId project.name
+            version '0.1.0'
+
+            artifact sourcesJar
+
+            withPom(pom)
+        }
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
 }
 
 dependencies {

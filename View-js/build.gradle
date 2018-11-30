@@ -10,15 +10,19 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.60"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.61"
         classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.37"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
     }
 }
 
 plugins {
     id 'kotlin-platform-js' version '1.2.60'
     id "com.moowork.node" version "1.2.0"
+    id "maven-publish"
+    id "com.jfrog.bintray"
 }
+
 repositories {
     jcenter()
     mavenCentral()
@@ -51,18 +55,45 @@ compileTestKotlin2Js {
     }
 }
 
+apply from: rootProject.file('pom.gradle')
+apply from: project.file('bintray.gradle')
+
+publishing {
+    publications {
+        mavenProject(MavenPublication) {
+            from components.java
+
+            groupId project.group
+            artifactId project.name
+            version '0.1.0'
+
+            artifact sourcesJar
+
+            withPom(pom)
+        }
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js"
     expectedBy project(":View-common")
     testCompile "org.jetbrains.kotlin:kotlin-test-js"
     compile 'org.kodein.di:kodein-di-erased-js:5.2.0'
     compile 'org.kodein.di:kodein-di-conf-js:5.2.0'
-}
-
-task bundleJar(type: Jar) {
-    archiveName = "View-js.jar"
-    destinationDir = file("${buildDir}/libs")
-    from "${buildDir}/classes/kotlin/main"
-    from "${buildDir}/bundle"
-
 }
