@@ -8,6 +8,7 @@
 .idea/**/dictionaries
 .idea/**/shelf
 .todo
+./scripts
 
 # Sensitive or high-churn files
 .idea/**/dataSources/

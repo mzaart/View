@@ -4,6 +4,10 @@ View is a high-level and cross-platform UI library written in Kotlin that
 makes UI development easier and faster. View makes your code cleaner, easy
 to read and more maintainable.
 
+**Note that this library is still under development. The current release
+constitutes a MVP. You can still use it but features may be added,
+removed or reimplemented and the library isn't fully tested yet.**
+
 ## Why use View?
 
 - Fully Native: With View, you run native code on each platform. The code
@@ -45,6 +49,6 @@ are responsible for mapping views to native objects. For example a view
 representing text will be mapped to a `UIView` on iOS, `TextView` on Android and
 a `span` element on the web.
 
-View uses Kotlin Multiplatform to share its code acroos platforms. 
+View uses Kotlin Multiplatform to share its code across platforms. 
 For more information on each component, please see the guides.
 

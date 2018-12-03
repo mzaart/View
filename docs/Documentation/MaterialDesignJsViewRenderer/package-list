@@ -1,0 +1,13 @@
+$dokka.format:markdown
+$dokka.linkExtension:md
+
+view.core.renderers
+view.core.renderers.viewRenderers
+view.core.renderers.viewRenderers.display
+view.core.renderers.viewRenderers.inputs
+view.core.renderers.viewRenderers.layouts
+view.di
+view.utils.algos.graph
+view.utils.elementCss
+view.utils.elementCss.properties
+view.utils.extensions
