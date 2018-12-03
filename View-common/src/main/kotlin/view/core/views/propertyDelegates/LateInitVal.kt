@@ -9,7 +9,7 @@ import kotlin.reflect.KProperty
  * The purpose of this delegate is to overcome the limitations of the builtin 'lateinit' modifier which cannot be
  * applied to properties of primitive types and immutable properties.
  */
-class LateInitVal<T>: ReadWriteProperty<Any, T> {
+open class LateInitVal<T>: ReadWriteProperty<Any, T> {
 
     private var value: T? = null
     private var isSet = false

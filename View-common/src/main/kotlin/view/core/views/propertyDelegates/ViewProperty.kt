@@ -5,13 +5,13 @@ import view.utils.validators.Validator
 import kotlin.reflect.KProperty
 
 /**
- * Represents a nullable and mutable view property.
+ * Represents a non-nullable and mutable view property.
  *
  * @property value The initial value of the property.
  * @property validator Validates the property value.
  * @constructor Creates the delegate with an initial value
  */
-class ViewProperty<T: Any>(
+open class ViewProperty<T: Any>(
         value: T,
         private val validator: Validator<T>? = null
 ): AbstractViewProperty<T>(value) {

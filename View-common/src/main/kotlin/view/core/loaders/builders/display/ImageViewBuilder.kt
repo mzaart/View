@@ -5,7 +5,7 @@ import view.core.views.display.ImageView
 import view.utils.mapBased.keys.delegates.nullable.EnumRWKey
 import view.utils.mapBased.keys.delegates.required.RequiredStringRWKey
 
-class ImageViewBuilder: AbstractViewBuilder<ImageView>() {
+open class ImageViewBuilder: AbstractViewBuilder<ImageView>() {
 
     override val view = ImageView()
 

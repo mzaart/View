@@ -1,0 +1,6 @@
+site_name: View
+repo_url: https://github.com/mzaart/View/
+site_dir: ../docs
+theme:
+  name: 'material'
+

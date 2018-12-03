@@ -6,7 +6,7 @@ import view.core.views.input.Button
 import view.utils.extensions.nonNull
 import view.utils.mapBased.keys.delegates.nullable.EnumRWKey
 
-class ButtonBuilder: AbstractViewBuilder<Button>() {
+open class ButtonBuilder: AbstractViewBuilder<Button>() {
 
     override val view = Button()
 

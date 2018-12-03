@@ -9,7 +9,7 @@ import view.utils.validators.conditions.LC
 /**
  * Represents an editable text field.
  */
-class EditText: View() {
+open class EditText: View() {
 
     /**
      * The text currently in the text field.

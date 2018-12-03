@@ -11,8 +11,11 @@ import view.di.inject
 
 /**
  * Base class for tree loaders that load view trees from serialized formats.
+ *
+ * @constructor Initializes the object with a root node
+ * @param rootNode The root of the view tree
  */
-abstract class SerializedViewTreeLoader: ViewTreeLoader {
+open class SerializedViewTreeLoader(protected val rootNode: LayoutNode): ViewTreeLoader {
 
     /**
      * Loads the view tree
@@ -24,11 +27,9 @@ abstract class SerializedViewTreeLoader: ViewTreeLoader {
                 "id" to "ViewTreeRoot",
                 "direction" to "VERTICAL"
         ))
-        visitNode(getRootNode(), bldr as LayoutBuilder<Layout>)
+        visitNode(rootNode, bldr as LayoutBuilder<Layout>)
         return bldr.build()
     }
-
-    protected abstract fun getRootNode(): Node
 
     private fun visitNode(node: Node, parentBldr: LayoutBuilder<Layout>) {
         val content = node.content

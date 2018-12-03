@@ -10,7 +10,7 @@ import view.utils.extensions.toID
 
 typealias RP = RelativeLayout.Positioning
 
-class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
+open class RelativeLayoutBuilder: LayoutBuilder<RelativeLayout>() {
 
      class Child: ViewKeys() {
          var alignParentTop by BoolRWKey

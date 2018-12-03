@@ -8,7 +8,7 @@ import view.utils.mapBased.keys.delegates.nullable.EnumRWKey
 import view.utils.mapBased.keys.delegates.nullable.IntRWKey
 import view.utils.mapBased.keys.delegates.required.RequiredIntRWKey
 
-class GridLayoutBuilder: LayoutBuilder<GridLayout>() {
+open class GridLayoutBuilder: LayoutBuilder<GridLayout>() {
 
     class CellKeys: ViewKeys() {
 

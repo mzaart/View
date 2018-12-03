@@ -7,7 +7,7 @@ import view.core.views.propertyDelegates.ViewProperty
 /**
  * Represents a button.
  */
-class Button: View() {
+open class Button: View() {
 
     /**
      * Represents a button type.

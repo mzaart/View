@@ -6,7 +6,7 @@ import view.utils.extensions.nonNull
 import view.utils.extensions.toEnum
 import view.utils.mapBased.keys.delegates.nullable.*
 
-class TextViewBuilder: AbstractViewBuilder<TextView>() {
+open class TextViewBuilder: AbstractViewBuilder<TextView>() {
 
     var text by StringRWKey
 

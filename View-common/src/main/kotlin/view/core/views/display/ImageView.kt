@@ -6,7 +6,7 @@ import view.core.views.propertyDelegates.LateInitVal
 /**
  * This view displays an image on the UI.
  */
-class ImageView: View() {
+open class ImageView: View() {
 
     /**
      * Represents the scaling strategy of the image in the view.
